@@ -27,7 +27,7 @@
 
 <body>
     <!-- Navigation-->
-    <nav class="navbar navbar-light bg-idna text-white static-top">
+    <nav class="navbar navbar-light bg-dark text-white static-top">
         <div class="container">
             <a class="navbar-brand text-white" href="{{ url('/') }}">TebakGambar.co</a>
             <a class="btn btn-light" href="{{ url('login') }}">Login</a>
@@ -78,16 +78,18 @@
         </div>
     </section>
 
-    <!-- Footer-->
-    <footer class="footer bg-idna text-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
-                    <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2021. All Rights Reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+   <!-- Footer -->
+<footer class="text-center text-lg-start bg-dark text-muted">
+
+
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+      © 2021 Copyright:
+      <a class="text-reset fw-bold" href="{{ url("") }}">TebakGambar.co</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
