@@ -1944,21 +1944,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["id"],
   data: function data() {
     return {
-      users: []
+      users: [],
+      detailuser: {}
     };
   },
   watch: {
     $route: "getUser"
   },
   mounted: function mounted() {
-    this.getUser();
+    this.getUsers();
   },
   methods: {
-    getUser: function getUser() {
+    getUsers: function getUsers() {
       var _this = this;
 
       axios.get("/api/users").then(function (response) {
@@ -1966,10 +1974,18 @@ __webpack_require__.r(__webpack_exports__);
         _this.users = response.data["data"];
       });
     },
+    getUser: function getUser() {
+      var _this2 = this;
+
+      axios.get("/api/users/" + this.id).then(function (response) {
+        console.log(response.data["data"]);
+        _this2.detailuser = response.data["data"];
+      });
+    },
     lihatUser: function lihatUser(id) {
       // this.$router.push("user/" + name.toLowerCase());
       this.$router.push({
-        name: "Profile",
+        name: "User",
         params: {
           id: id
         }
@@ -2088,11 +2104,12 @@ var route = [{
   component: About
 }, {
   name: "User",
-  path: "/user",
-  component: _pages_User_vue__WEBPACK_IMPORTED_MODULE_3__.default
+  path: "/user/:id?",
+  component: _pages_User_vue__WEBPACK_IMPORTED_MODULE_3__.default,
+  props: true
 }, {
   name: "Profile",
-  path: "/user/:id",
+  path: "/user",
   component: _pages_Profile_vue__WEBPACK_IMPORTED_MODULE_4__.default,
   props: true
 }, {
@@ -2100,7 +2117,7 @@ var route = [{
   component: _pages_NotFound_vue__WEBPACK_IMPORTED_MODULE_2__.default
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__.default({
-  linkActiveClass: 'active',
+  linkActiveClass: "active",
   mode: "history",
   routes: route
 });
@@ -38248,7 +38265,25 @@ var render = function() {
           ])
         }),
         0
-      )
+      ),
+      _vm._v(" "),
+      _vm.id
+        ? _c(
+            "section",
+            [
+              _c("h1", [_vm._v("Hello " + _vm._s(_vm.detailuser.name))]),
+              _vm._v(" "),
+              _c("h3", [_vm._v("Email: " + _vm._s(_vm.detailuser.email))]),
+              _vm._v(" "),
+              _c("router-link", { attrs: { to: { username: "User" } } }, [
+                _vm._v("Back")
+              ]),
+              _vm._v(" "),
+              _c("router-link", { attrs: { to: "/user" } }, [_vm._v("Back")])
+            ],
+            1
+          )
+        : _vm._e()
     ])
   ])
 }

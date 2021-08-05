@@ -12,6 +12,13 @@
                     }}</a>
                 </li>
             </ul>
+
+            <section v-if="id">
+                <h1>Hello {{ detailuser.name }}</h1>
+                <h3>Email: {{ detailuser.email }}</h3>
+                <router-link :to="{ username: 'User' }">Back</router-link>
+                <router-link to="/user">Back</router-link>
+            </section>
         </section>
     </div>
 </template>
@@ -21,26 +28,33 @@ export default {
     props: ["id"],
     data() {
         return {
-            users: []
+            users: [],
+             detailuser: {}
         };
     },
     watch: {
         $route: "getUser"
     },
     mounted() {
-        this.getUser();
+        this.getUsers();
     },
     methods: {
-        getUser() {
+        getUsers() {
             axios.get("/api/users").then(response => {
                 // console.log(response.data);
                 this.users = response.data["data"];
             });
         },
+         getUser() {
+            axios.get("/api/users/" + this.id).then(response => {
+                console.log(response.data["data"]);
+                this.detailuser = response.data["data"];
+            });
+        },
         lihatUser(id) {
             // this.$router.push("user/" + name.toLowerCase());
             this.$router.push({
-                name: "Profile",
+                name: "User",
                 params: { id }
             });
         }
