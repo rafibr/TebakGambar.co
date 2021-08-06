@@ -2,34 +2,59 @@
     <div>
         <section>
             <h1>Daftar User</h1>
-            <ul>
-                <li v-for="user in users">
-                    <!-- <router-link :to="profile_uri(user.name)">
-                        {{ user.name }}
-                    </router-link> -->
-                    <a href="" @click.prevent="lihatUser(user.id)">{{
-                        user.name
-                    }}</a>
-                </li>
-            </ul>
-
-            <section v-if="id">
-                <h1>Hello {{ detailuser.name }}</h1>
-                <h3>Email: {{ detailuser.email }}</h3>
-                <router-link :to="{ username: 'User' }">Back</router-link>
-                <router-link to="/user">Back</router-link>
-            </section>
+            <data-table
+                url="http://vue-datatable.test/ajax"
+                :per-page="perPage"
+                :columns="columns"
+            >
+            </data-table>
+            <!-- <table id="table_user" class="display table is-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users">
+                        <td>
+                            <a href="" @click.prevent="lihatUser(user.id)">{{
+                                user.name
+                            }}</a>
+                        </td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                </tbody>
+            </table> -->
         </section>
     </div>
 </template>
 
 <script>
 export default {
+    name: "app",
     props: ["id"],
     data() {
         return {
-            users: [],
-             detailuser: {}
+
+            perPage: ["10", "25", "50", "100"],
+            columns: [
+                {
+                    label: "ID",
+                    name: "id",
+                    filterable: true
+                },
+                {
+                    label: "Name",
+                    name: "name",
+                    filterable: true
+                },
+                {
+                    label: "Email",
+                    name: "email",
+                    filterable: true
+                }
+            ]
         };
     },
     watch: {
@@ -41,22 +66,15 @@ export default {
     methods: {
         getUsers() {
             axios.get("/api/users").then(response => {
-                // console.log(response.data);
                 this.users = response.data["data"];
             });
         },
-         getUser() {
-            axios.get("/api/users/" + this.id).then(response => {
-                console.log(response.data["data"]);
-                this.detailuser = response.data["data"];
-            });
-        },
         lihatUser(id) {
-            // this.$router.push("user/" + name.toLowerCase());
-            this.$router.push({
-                name: "User",
-                params: { id }
-            });
+            this.$router.push("user/" + id);
+            // this.$router.push({
+            //     name: "Profile",
+            //     params: { id }
+            // });
         }
     }
 };

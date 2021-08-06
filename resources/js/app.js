@@ -1,5 +1,11 @@
 require("./bootstrap");
 import Vue from "vue";
+import jQuery from 'jquery'
+global.jQuery = jQuery
+global.$ = jQuery
+
+import DataTable from 'laravel-vue-datatable';
+Vue.use(DataTable);
 
 import router from "./router/route.js";
 

@@ -12,24 +12,6 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-
-    public function index()
-    {
-        // $users = DB::table('users')->select('id', 'name')->get();
-        $users = User::all();
-        // dump($users);
-        return response()->json(['rd' => 'success', 'rc' => '200', 'data' => $users], 200);
-        // return response()->json($users);
-    }
-
-    public function show($id)
-    {
-        // $user = DB::table('users')->select('id', 'name')->where('id', $id)->first();
-        $user = User::find($id);
-        // dump($users);
-        return response()->json(['rd' => 'success', 'rc' => '200', 'data' => $user], 200);
-    }
-
     public function showFormLogin()
     {
         if (Auth::check()) {

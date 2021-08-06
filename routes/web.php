@@ -33,6 +33,7 @@ Route::get('/admin/', function () {
 
 });
 
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');

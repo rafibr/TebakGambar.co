@@ -3,6 +3,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
+import DataTable from 'laravel-vue-datatable';
+Vue.use(DataTable);
 const Home = require("../pages/Home.vue").default;
 const About = require("../pages/About.vue").default;
 import NotFound from "../pages/NotFound.vue";
@@ -21,13 +23,12 @@ const route = [{
     },
     {
         name: "User",
-        path: "/user/:id?",
-        component: User,
-        props: true
+        path: "/user",
+        component: User
     },
     {
         name: "Profile",
-        path: "/user",
+        path: "/user/:id",
         component: Profile,
         props: true
     },
