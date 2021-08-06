@@ -1,10 +1,9 @@
 import Vue from "vue";
 
 import VueRouter from "vue-router";
+
 Vue.use(VueRouter);
 
-import DataTable from 'laravel-vue-datatable';
-Vue.use(DataTable);
 const Home = require("../pages/Home.vue").default;
 const About = require("../pages/About.vue").default;
 import NotFound from "../pages/NotFound.vue";

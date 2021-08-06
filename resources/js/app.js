@@ -1,13 +1,18 @@
 require("./bootstrap");
 import Vue from "vue";
-import jQuery from 'jquery'
-global.jQuery = jQuery
-global.$ = jQuery
-
-import DataTable from 'laravel-vue-datatable';
-Vue.use(DataTable);
-
+import jQuery from "jquery";
+import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
 import router from "./router/route.js";
+
+
+global.jQuery = jQuery;
+global.$ = jQuery;
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+
+
 
 Vue.component(
     "example-component",
