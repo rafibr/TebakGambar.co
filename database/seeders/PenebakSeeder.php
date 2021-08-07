@@ -18,11 +18,12 @@ class PenebakSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 50; $i++) :
+        for ($i = 1; $i <= 10; $i++) :
             $faker = Faker::create();
             DB::table('penebak')->insert([
                 'name' => $faker->name,
                 'kepala_cabang' => $faker->numberBetween(1,5),
+                'alamat_idena' => $faker->iban(null) ,
                 'tipe_pembayaran' => $faker->numberBetween(1,3),
                 'no_hp_pembayaran' => $faker->creditCardNumber,
                 'created_at' => $faker->dateTime($max = 'now', $timezone = null)
