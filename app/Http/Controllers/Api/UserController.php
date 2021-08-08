@@ -7,19 +7,22 @@ use App\Models\Penebak;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class UserController extends Controller
 {
     public function getUsers()
     {
-        $users = User::all();
+        $users = Datatables::of(User::all())->toJson();
 
-        return response()->json(['data' => $users], 200);
+        // return response()->json(['data' => $users], 200);
+        return $users;
     }
 
     public function getPenebakCabang($id)
     {
-        $penebak = Penebak::where("kepala_cabang", $id)->get();
-        return response()->json(['data' => $penebak], 200);
+        $penebakTable = Datatables::of(Penebak::where("kepala_cabang", $id))->toJson();
+        // $penebak = Penebak::where("kepala_cabang", $id)->get();
+        return $penebakTable;
     }
 }

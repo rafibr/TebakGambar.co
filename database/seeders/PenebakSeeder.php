@@ -18,7 +18,7 @@ class PenebakSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 10; $i++) :
+        for ($i = 1; $i <= 200; $i++) :
             $faker = Faker::create();
             DB::table('penebak')->insert([
                 'name' => $faker->name,

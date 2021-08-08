@@ -54,7 +54,6 @@
                                     style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>No.</th>
                                             <th>Nama</th>
                                             <th>Email</th>
                                             <th>Aksi</th>
@@ -65,7 +64,6 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>No.</th>
                                             <th>Nama</th>
                                             <th>Email</th>
                                             <th>Aksi</th>
@@ -111,7 +109,6 @@
     <script>
         var api_url = "{{ url('api/users') }}";
         var base_url = "{{ url('') }}";
-        var no = 1;
         $(document).ready(function() {
 
             // Setup - add a text input to each footer cell
@@ -123,14 +120,10 @@
 
             $("#tableCabang").DataTable({
                 dom: 'Bfrtip',
+                processing: true,
+                serverSide: true,
                 "ajax": api_url,
                 "columns": [{
-                        "data": null,
-                        render: function(data, type, row) {
-                            return no++;
-                        }
-                    },
-                    {
                         "data": "name"
                     },
                     {
@@ -162,7 +155,7 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#tableCabang_wrapper .col-md-6:eq(0)');
         });
     </script>

@@ -87,6 +87,8 @@
                                         <tr>
                                             <th>Nama</th>
                                             <th>Address</th>
+                                            <th>State</th>
+                                            <th>Age</th>
                                             <th>Pembayaran</th>
                                             <th>No. Pembayaran</th>
                                             <th>Aksi</th>
@@ -98,6 +100,8 @@
                                         <tr>
                                             <th>Nama</th>
                                             <th>Address</th>
+                                            <th>State</th>
+                                            <th>Age</th>
                                             <th>Pembayaran</th>
                                             <th>No. Pembayaran</th>
                                             <th>Aksi</th>
@@ -143,10 +147,9 @@
     <script>
         var api_url = "{{ url('api/cabang') . '/' . Request::segment(2) }}";
         var base_url = "{{ url('') }}";
-        var no = 1;
 
+        var idena_identity = "{{ 'https://scan.idena.org/identity/' }}";
         $(document).ready(function() {
-            console.log(api_url);
             // Setup - add a text input to each footer cell
             $('#tablePenebak tfoot th').each(function() {
                 var title = $(this).text();
@@ -156,12 +159,33 @@
 
             $("#tablePenebak").DataTable({
                 dom: 'Bfrtip',
+                processing: true,
+                serverSide: true,
                 "ajax": api_url,
                 "columns": [{
                         "data": "name"
                     },
                     {
                         "data": "alamat_idena"
+                    },
+                    // TODO : get age dan state
+                    {
+                        "data": "alamat_idena",
+                        render: function(data, type, row) {
+                            $.get("https://api.idena.io/api/Identity/" + data, function(data,
+                                status) {
+                                return data.state;
+                            });
+                        }
+                    },
+                    {
+                        "data": "alamat_idena",
+                        render: function(data, type, row) {
+                            $.get("https://api.idena.io/api/Identity/" + data, function(data,
+                                status) {
+                                return data.state;
+                            });
+                        }
                     },
                     {
                         "data": "tipe_pembayaran"
@@ -173,7 +197,9 @@
                         "data": "id",
                         render: function(data, type, row) {
                             return '<div class="text-center"><a href = "' + base_url +
-                                '/profile/" class = "btn btn-primary" > Detail </a></div> '
+                                '/profile/" class = "btn btn-primary" > Detail </a><a href = "' +
+                                idena_identity + '' + row.alamat_idena +
+                                '" class = "btn btn-success" > Identity </a></div> '
                         }
                     }
                 ],
@@ -194,7 +220,7 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#tablePenebak_wrapper .col-md-6:eq(0)');
         });
     </script>
