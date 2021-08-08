@@ -22,6 +22,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url('cabang') }}">Cabang</a></li>
                             <li class="breadcrumb-item active">Profile</li>
                         </ol>
                     </div><!-- /.col -->
@@ -39,7 +40,7 @@
                             <div class="card-body box-profile">
                                 <div class="text-center">
                                     <img class="profile-user-img img-fluid img-circle"
-                                        src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                        src="{{ asset('dist/img/user4-128x128.jpg') }}" alt="User profile picture">
                                 </div>
 
                                 <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
@@ -48,15 +49,16 @@
 
                                 <ul class="list-group list-group-unbordered mb-3">
                                     <li class="list-group-item">
-                                        <b><i class="fas fa-user"></i> Penebak</b> <a class="float-right">1,322</a>
+                                        <b><i class="fas fa-user"></i> Penebak</b> <a class="float-right"><span
+                                                class="badge badge-info right">1,322</span></a>
                                     </li>
                                     <li class="list-group-item">
                                         <b><i class="fas fa-check-circle" style="color:#20c997"></i> Berhasil</b> <a
-                                            class="float-right">543</a>
+                                            class="float-right"><span class="badge badge-success right">522</span></a>
                                     </li>
                                     <li class="list-group-item">
                                         <b><i class="fas fa-times-circle" style="color:#dc3545"></i> Gagal</b> <a
-                                            class="float-right">13,287</a>
+                                            class="float-right"><span class="badge badge-danger right">2,551</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -77,36 +79,28 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="card-body text-center">
+                            <div class="card-body">
 
-                                <table id="tablePenebak" class="table table-hover table-bordered table-striped">
+                                <table id="tablePenebak" width="100%"
+                                    class="table table-hover table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Rendering engine</th>
-                                            <th>Browser</th>
-                                            <th>Platform(s)</th>
-                                            <th>Engine version</th>
+                                            <th>Nama</th>
+                                            <th>Address</th>
+                                            <th>Pembayaran</th>
+                                            <th>No. Pembayaran</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Trident</td>
-                                            <td>Internet
-                                                Explorer 4.0
-                                            </td>
-                                            <td>Win 95+</td>
-                                            <td> 4</td>
-                                            <td><a href="#" class="btn btn-primary">Lihat</a></td>
-                                        </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>Rendering engine</th>
-                                            <th>Browser</th>
-                                            <th>Platform(s)</th>
-                                            <th>Engine version</th>
-                                            <th>CSS grade</th>
+                                            <th>Nama</th>
+                                            <th>Address</th>
+                                            <th>Pembayaran</th>
+                                            <th>No. Pembayaran</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -147,7 +141,12 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script>
+        var api_url = "{{ url('api/cabang') . '/' . Request::segment(2) }}";
+        var base_url = "{{ url('') }}";
+        var no = 1;
+
         $(document).ready(function() {
+            console.log(api_url);
             // Setup - add a text input to each footer cell
             $('#tablePenebak tfoot th').each(function() {
                 var title = $(this).text();
@@ -156,6 +155,28 @@
 
 
             $("#tablePenebak").DataTable({
+                dom: 'Bfrtip',
+                "ajax": api_url,
+                "columns": [{
+                        "data": "name"
+                    },
+                    {
+                        "data": "alamat_idena"
+                    },
+                    {
+                        "data": "tipe_pembayaran"
+                    },
+                    {
+                        "data": "no_hp_pembayaran"
+                    },
+                    {
+                        "data": "id",
+                        render: function(data, type, row) {
+                            return '<div class="text-center"><a href = "' + base_url +
+                                '/profile/" class = "btn btn-primary" > Detail </a></div> '
+                        }
+                    }
+                ],
                 initComplete: function() {
                     // Apply the search
                     this.api().columns().every(function() {

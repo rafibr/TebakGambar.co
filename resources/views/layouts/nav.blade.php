@@ -15,13 +15,13 @@
         <div class="collapse navbar-collapse order-3" id="navbarCollapse">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li class="nav-item font-weight-bold">
                     <a href="{{ url('home') }}" class="nav-link {{ Request::is('home') ? 'active' : '' }}">Home</a>
                 </li>
                 @if (Auth::user()->level == 99)
-                    <li class="nav-item">
+                    <li class="nav-item font-weight-bold">
                         <a href="{{ url('cabang') }}"
-                            class="nav-link {{ Request::is('cabang') ? 'active' : '' }}">Cabang</a>
+                            class="nav-link {{ Request::is('cabang')||Request::is('profile') ? 'active' : '' }}">Cabang</a>
                     </li>
                 @endif
             </ul>
