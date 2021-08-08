@@ -6,8 +6,16 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+
+    // function for View
+    public function homeView()
     {
         return view('dashboard');
     }
+
+    public function userView()
+    {
+        return view('users');
+    }
+    // /. function for View
 }
