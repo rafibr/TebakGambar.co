@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Auth;
-use Validator;
-use Hash;
-use Session;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+
     public function showFormLogin()
     {
         if (Auth::check()) {
@@ -37,7 +37,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
 
@@ -51,14 +51,12 @@ class AuthController extends Controller
         if (Auth::check()) { // true sekalian session field di users nanti bisa dipanggil via Auth
             //Login Success
             return redirect('home');
-
         } else { // false
 
             //Login Fail
             Session::flash('error', 'Email atau password salah');
             return redirect()->route('login');
         }
-
     }
 
     public function showFormRegister()
@@ -87,18 +85,18 @@ class AuthController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
 
-        $user = new User;
+        $user = new User();
         $user->name = ucwords(strtolower($request->name));
         $user->email = strtolower($request->email);
         $user->password = Hash::make($request->password);
         $user->email_verified_at = \Carbon\Carbon::now();
         $simpan = $user->save();
 
-        if($simpan){
+        if ($simpan) {
             Session::flash('success', 'Register berhasil! Silahkan login untuk mengakses data');
             return redirect()->route('login');
         } else {

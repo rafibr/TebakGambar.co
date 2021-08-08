@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// [UserController::class, 'index']
-
 Route::get('/', [LandingController::class, 'index']);
 Route::get('login', [AuthController::class, 'showFormLogin'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
@@ -25,20 +23,11 @@ Route::get('register', [AuthController::class, 'showFormRegister'])->name('regis
 Route::post('register', [AuthController::class, 'register']);
 
 
-Route::get('/admin/', function () {
-    if (Auth::check()) {
-        return view('admin');
-    }
-    return redirect('/login');
-
-});
-
 
 Route::group(['middleware' => 'auth'], function () {
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::get('/{any}', function () {
-        return view('dashboard');
-    })->where('any', '.*');
+    Route::get('home', [DashboardController::class, 'index']);
+
 });

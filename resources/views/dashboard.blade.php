@@ -3,22 +3,22 @@
 @section('content')
 
     <!-- Navbar -->
-    @include('layouts.admin.nav')
+    @include('layouts.nav')
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    @include('layouts.admin.sidebar')
+    @include('layouts.sidebar')
     <!-- /.Main Sidebar Container -->
 
     <!-- Content Wrapper. Contains page content -->
-    @include('layouts.admin.content')
+    @include('layouts.content')
     <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
-    @include('layouts.admin.controlbar')
+    @include('layouts.controlbar')
     <!-- /.control-sidebar -->
 
     <!-- Admin Footer -->
-    @include('layouts.admin.footer')
+    @include('layouts.footer')
 
 @endsection

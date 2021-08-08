@@ -16,13 +16,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <meta name="user-id" content="{{ Auth::user()->id }}">
 
 </head>
 <body class="hold-transition sidebar-mini dark">
 
     <!-- wrapper -->
     <div class="wrapper" id="app">
+
         @yield('content')
     </div>
     <!-- ./wrapper -->
