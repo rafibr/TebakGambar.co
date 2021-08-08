@@ -22,7 +22,7 @@ class PenebakSeeder extends Seeder
             $faker = Faker::create();
             DB::table('penebak')->insert([
                 'name' => $faker->name,
-                'kepala_cabang' => $faker->numberBetween(1,5),
+                'kepala_cabang' => $faker->numberBetween(3,3),
                 'alamat_idena' => $faker->iban(null) ,
                 'tipe_pembayaran' => $faker->numberBetween(1,3),
                 'no_hp_pembayaran' => $faker->creditCardNumber,

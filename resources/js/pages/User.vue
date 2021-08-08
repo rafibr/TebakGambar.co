@@ -133,9 +133,6 @@ export default {
     watch: {
         $route: "getUser"
     },
-    mounted() {
-        this.getUsers();
-    },
     methods: {
         onChangeQuery(queryParams) {
             this.queryParams = queryParams;
@@ -151,8 +148,6 @@ export default {
                     }
                 })
                 .then(function(response) {
-                    console.log(response.data);
-                    console.log(response);
                     self.users = response.data.data;
                     self.total_rows = response.data.total;
                 })
@@ -160,18 +155,12 @@ export default {
                     console.log(error);
                 });
         },
-        getUsers() {
-            axios.get("/api/users").then(response => {
-                // this.users = response.data["data"];
-                this.users = response.data;
-            });
-        },
         lihatUser(id) {
-            this.$router.push("user/" + id);
-            // this.$router.push({
-            //     name: "Profile",
-            //     params: { id }
-            // });
+            // this.$router.push("user/" + id);
+            this.$router.push({
+                name: "Profile",
+                params: { id }
+            });
         }
     }
 };

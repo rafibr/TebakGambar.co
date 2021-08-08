@@ -22,10 +22,12 @@ Vue.component("navbar-component", require("./components/Navbar.vue").default);
 Vue.component("brand-component", require("./components/BrandLogo.vue").default);
 Vue.component("footer-component", require("./components/Footer.vue").default);
 
+
 const app = new Vue({
     el: "#app",
     data: {
-        title: "Laravel8 test"
+        title: "Laravel8 test",
+        id: document.querySelector("meta[name='user-id']").getAttribute('content')
     },
     router
 });

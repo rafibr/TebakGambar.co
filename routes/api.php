@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\api\PenebakController;
 use App\Http\Controllers\api\UserController;
 
 use Illuminate\Http\Request;
@@ -20,6 +22,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/users', [UserController::class, 'index']);
-// Route::get('/users', 'api\UserController@index');
-Route::get('/users/{id}', [UserController::class, 'show']);
-// Route::get('/users/{id}', 'api\UserController@show');
+Route::get('/user/{id}', [UserController::class, 'show']);
+Route::get('/penebak/{id}', [PenebakController::class, 'index']);
+// Route::get('/users/{id}', [UserController::class, 'show']);
