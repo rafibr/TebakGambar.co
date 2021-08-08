@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -15,7 +16,15 @@ class DashboardController extends Controller
 
     public function userView()
     {
-        return view('users');
+        if (Auth::user()->level == 99)
+            return view('cabang');
+        else
+            return redirect('home');
+    }
+
+    public function profileView()
+    {
+        return view('profile');
     }
     // /. function for View
 }

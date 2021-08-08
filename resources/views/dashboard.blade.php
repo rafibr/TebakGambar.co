@@ -18,9 +18,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Layout</a></li>
-                            <li class="breadcrumb-item active">Top Navigation</li>
+                            <li class="breadcrumb-item active">Home</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -33,32 +31,32 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-sm-6 col-md-3">
-                      <div class="info-box">
-                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
 
-                        <div class="info-box-content">
-                          <span class="info-box-text">CPU Traffic</span>
-                          <span class="info-box-number">
-                            10
-                            <small>%</small>
-                          </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">CPU Traffic</span>
+                                <span class="info-box-number">
+                                    10
+                                    <small>%</small>
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
-                      </div>
-                      <!-- /.info-box -->
+                        <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
                     <div class="col-12 col-sm-6 col-md-3">
-                      <div class="info-box mb-3">
-                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
 
-                        <div class="info-box-content">
-                          <span class="info-box-text">Likes</span>
-                          <span class="info-box-number">41,410</span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Likes</span>
+                                <span class="info-box-number">41,410</span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
-                      </div>
-                      <!-- /.info-box -->
+                        <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
 
@@ -66,51 +64,51 @@
                     <div class="clearfix hidden-md-up"></div>
 
                     <div class="col-12 col-sm-6 col-md-3">
-                      <div class="info-box mb-3">
-                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
-                        <div class="info-box-content">
-                          <span class="info-box-text">Sales</span>
-                          <span class="info-box-number">760</span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Sales</span>
+                                <span class="info-box-number">760</span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
-                      </div>
-                      <!-- /.info-box -->
+                        <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
                     <div class="col-12 col-sm-6 col-md-3">
-                      <div class="info-box mb-3">
-                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
 
-                        <div class="info-box-content">
-                          <span class="info-box-text">New Members</span>
-                          <span class="info-box-number">2,000</span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">New Members</span>
+                                <span class="info-box-number">2,000</span>
+                            </div>
+                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box-content -->
-                      </div>
-                      <!-- /.info-box -->
+                        <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
-                  </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card card-secondary">
                             <div class="card-header">
-                              <h3 class="card-title">Primary</h3>
+                                <h3 class="card-title">Primary</h3>
 
-                              <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                  <i class="fas fa-minus"></i>
-                                </button>
-                              </div>
-                              <!-- /.card-tools -->
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+                                <!-- /.card-tools -->
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body bg-dark">
-                              The body of the card
+                                The body of the card
                             </div>
                             <!-- /.card-body -->
-                          </div>
+                        </div>
                     </div>
 
                 </div>
