@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 
 class PenebakController extends Controller
 {
-    public function getCabang($id)
+    public function getPenebak($id)
     {
-        $penebak = Penebak::all();
-        return response()->json(['data' => $penebak], 200);
+        $penebak = Penebak::with('user')->where("id", $id)->first();
+        return response()->json($penebak, 200);
     }
 }

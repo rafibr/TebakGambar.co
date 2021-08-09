@@ -25,5 +25,10 @@ class DashboardController extends Controller
     {
         return view('profile');
     }
+    
+    public function penebakView()
+    {
+        return view('penebak');
+    }
     // /. function for View
 }

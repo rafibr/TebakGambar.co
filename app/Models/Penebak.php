@@ -9,4 +9,9 @@ class Penebak extends Model
 {
     use HasFactory;
     protected $table = "penebak";
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'kepala_cabang', 'id');
+    }
 }
