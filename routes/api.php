@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\CabangController;
 use App\Http\Controllers\Api\PenebakController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\SaveDataController;
 use App\Models\Penebak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +28,9 @@ Route::get('cabang/{id}', [UserController::class, 'getPenebakCabang']);
 Route::get('penebak/{id}', [PenebakController::class, 'getPenebak']);
 
 Route::get('penebak/{id}', [PenebakController::class, 'getPenebak']);
+Route::get('penebakcount/{id}', [CabangController::class, 'getCountPenebak']);
 
+Route::post('save_penebak/', [SaveDataController::class, 'savePenebak']);
+Route::post('add_penebak/', [SaveDataController::class, 'addPenebak']);
+
+Route::post('save_ssdompet/', [SaveDataController::class, 'saveSSDompet']);

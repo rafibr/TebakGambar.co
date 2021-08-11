@@ -21,9 +21,14 @@ class UserController extends Controller
 
     public function getPenebakCabang($id)
     {
-        $penebakTable = Datatables::of(Penebak::select('*', 'penebak.id as penebak_id')->join('dompet_digital', 'penebak.tipe_pembayaran',  'dompet_digital.id')->where("kepala_cabang", $id))->toJson();
+        $penebakTable = Datatables::of(
+            Penebak::select('*', 'penebak.id as penebak_id', 'dompet_digital.nama_dompet as tipe_dompet')
+                ->leftjoin('dompet_digital', 'penebak.tipe_pembayaran',  'dompet_digital.id')
+                ->where("kepala_cabang", $id)
+        )
+            ->toJson();
+
         // $penebak = Penebak::where("kepala_cabang", $id)->get();
         return $penebakTable;
     }
-
 }

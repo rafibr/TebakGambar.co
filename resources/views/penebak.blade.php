@@ -79,8 +79,8 @@
                                         <hr>
                                         <div class="row text-left">
                                             <div class="col-sm-12">
-                                                <a class="btn btn-info " target="__blank" data-toggle="modal"
-                                                    data-target="#editPenebak">Edit</a>
+                                                <a class="btn btn-info d-flex justify-content-center" target="__blank"
+                                                    data-toggle="modal" data-target="#modalEditPenebak">Edit</a>
                                             </div>
                                         </div>
                                     </div>
@@ -93,10 +93,13 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-12 text-center">
-                                        <a id="ss_dompet_parent" href="#" data-toggle="lightbox"
-                                            data-title="SS Dompet Digital" data-gallery="gallery">
-                                            <img id="ss_dompet" src="#" class="img-fluid mb-2" alt="SS Dompet Digital" />
+                                        <a id="ss_dompet_parent" href="{{ url('storage/SSDompet/background.jpg') }}"
+                                            data-toggle="lightbox" data-title="SS Dompet Digital" data-gallery="gallery">
+                                            <img id="ss_dompet" src="{{ url('storage/SSDompet/background.jpg') }}"
+                                                class="img-fluid mb-2" alt="SS Dompet Digital" />
                                         </a>
+                                        <a class="btn btn-outline-info d-flex justify-content-center" target="__blank"
+                                            data-toggle="modal" data-target="#modalEditSS">Ganti SS</a>
                                     </div>
                                 </div>
                             </div>
@@ -107,30 +110,32 @@
                 <!-- /.content -->
 
                 <!-- Modal -->
-                <div class="modal fade" id="editPenebak" tabindex="-1" role="dialog" aria-labelledby="editPenebakTitle"
+                <div class="modal fade" id="modalEditPenebak" role="dialog" aria-labelledby="modalEditPenebakTitle"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editPenebakTitle">Edit Penebak</h5>
+                                <h5 class="modal-title" id="modalEditPenebakTitle">Edit Penebak</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
 
-                            <div class="modal-body">
-                                <form id="formEditPenebak" method="POST">
-                                    <input type="text" id="idPenebak">
+                            <form id="formEditPenebak" method="POST">
+                                <div class="modal-body">
+                                    <input type="hidden" class="idPenebak" id="idPenebak" name="idPenebak">
                                     <div class="form-group row">
                                         <label for="inputNama" class="col-sm-4 col-form-label">Nama</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="inputNama" placeholder="Input Nama">
+                                            <input type="text" name="inputNama" class="form-control" id="inputNama"
+                                                placeholder="Input Nama">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="inputKepalaCabang" class="col-sm-4 col-form-label">Kepala Cabang</label>
                                         <div class="col-sm-8">
-                                            <select class="form-control select2bs4" id="inputKepalaCabang">
+                                            <select name="inputKepalaCabang" class="form-control select2bs4"
+                                                id="inputKepalaCabang">
                                                 <option disabled selected>Pilih Kepala Cabang</option>
                                                 @foreach ($data as $m)
 
@@ -143,7 +148,7 @@
                                     <div class="form-group row">
                                         <label for="inputAddress" class="col-sm-4 col-form-label">Idna Address</label>
                                         <div class="col-sm-8">
-                                            <textarea class="form-control" id="inputAddress"
+                                            <textarea name="inputAddress" class="form-control" id="inputAddress"
                                                 placeholder="Input Idena Address"></textarea>
                                         </div>
                                     </div>
@@ -151,8 +156,14 @@
                                         <label for="inputJenisPembayaran" class="col-sm-4 col-form-label">Jenis
                                             Pembayaran</label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" id="inputJenisPembayaran">
+                                            <select name="inputJenisPembayaran" class="form-control select2bs4"
+                                                id="inputJenisPembayaran">
                                                 <option disabled selected>Pilih Pembayaran</option>
+                                                @foreach ($dataDompet as $m)
+
+                                                    <option value="{{ $m->id }}">{{ $m->nama_dompet }}</option>
+
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -160,16 +171,45 @@
                                         <label for="inputNoPembayaran" class="col-sm-4 col-form-label">No.
                                             Pembayaran</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="inputNoPembayaran"
-                                                placeholder="Input No.Pembayaran">
+                                            <input type="number" name="inputNoPembayaran" class="form-control"
+                                                id="inputNoPembayaran" placeholder="Input No.Pembayaran">
                                         </div>
                                     </div>
-                                </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="submit" form="formEditPenebak" class="btn btn-success">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalEditSS" role="dialog" aria-labelledby="modalEditSSTitle"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalEditSSTitle">Edit Penebak</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" form="formEditPenebak" class="btn btn-primary">Save changes</button>
-                            </div>
+
+                            <form id="formEditSS" method="POST" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <input type="hidden" class="idPenebak" id="idPenebakSS" name="idPenebakSS">
+                                    <div class="form-group">
+                                        <label for="fileSSDompet">SS Dompet</label>
+                                        <input type="file" name="imgupload" class="form-control" id="imgupload"
+                                            accept="image/png, image/gif, image/jpeg">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="submit" form="formEditSS" class="btn btn-success">Simpan</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -198,17 +238,17 @@
                 var api_url = "{{ url('api/penebak') . '/' . Request::segment(2) }}";
                 var cabang_url = "{{ url('api/kepalaCabang') }}";
                 var base_url = "{{ url('') }}";
-                var image_url = "{{ url('storage') . '/' }}";
+                var image_url = "{{ url('storage/SSDompet') . '/' }}";
 
-                var idena_identity_url = "{{ 'https://scan.idena.org/identity/' }}";
+                var idena_identity_url = "https://scan.idena.org/identity/";
 
                 var data_kepala_cabang = [];
                 $(function() {
-                    //Initialize select2bs4 Elements
-                    // TODO: Masukkan kepala cabang
+                    //Initialize Select2 Elements
                     $('.select2bs4').select2({
                         theme: 'bootstrap4'
                     })
+
                     $(document).on('click', '[data-toggle="lightbox"]', function(event) {
                         event.preventDefault();
                         $(this).ekkoLightbox({
@@ -237,18 +277,61 @@
                         $("#nama_kepalaCabang").text(data.kepala_cabang);
                         $("#idna_address").text(data.alamat_idena);
                         $("#nama_dompet").text(data.nama_dompet);
-                        $("#no_dompet").text(data.no_hp_pembayaran);
+                        $("#no_pembayaran").text(data.no_hp_pembayaran);
 
                         $("#ss_dompet").attr("src", image_url + data.image_dompet);
                         $("#ss_dompet_parent").attr("href", image_url + data.image_dompet)
 
-                        $("#idPenebak").val(data.id)
+                        $(".idPenebak").val(data.id)
                         $("#inputNama").val(data.name)
                         $("#inputAddress").val(data.alamat_idena)
                         $("#inputNoPembayaran").val(data.no_hp_pembayaran)
+                        $("#inputKepalaCabang").val(data.id_kepalaCabang).change();
+                        $("#inputJenisPembayaran").val(data.tipe_pembayaran).change();
 
                     });
                 }
+
+                $("#formEditPenebak").submit(function(e) {
+                    e.preventDefault();
+                    var data = $(this).serialize();
+                    $.ajax({
+                        type: 'POST',
+                        data: data,
+                        url: "{{ url('api/save_penebak') }}",
+                        success: function(data) {
+                            load_data(api_url);
+                            alert(data['success']);
+                            $("#modalEditPenebak").modal('hide');
+                        }
+                    });
+                });
+
+                $("#formEditSS").submit(function(e) {
+                    e.preventDefault();
+
+                    // Get the selected file
+                    var files = $('#imgupload')[0].files;
+                    var id_penebak = $('#idPenebakSS').val();
+                    var fd = new FormData(this);
+                    fd.append('file', files[0]);
+                    fd.append('id_penebak', id_penebak);
+                    // console.log(new FormData(this));
+                    $.ajax({
+                        type: 'POST',
+                        data: fd,
+                        dataType: 'JSON',
+
+                        contentType: false,
+                        processData: false,
+                        url: "{{ url('api/save_ssdompet') }}",
+                        success: function(data) {
+                            load_data(api_url);
+                            alert(data['success']);
+                            $("#modalEditSS").modal('hide');
+                        }
+                    });
+                });
             </script>
 
         @endsection
