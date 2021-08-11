@@ -17,7 +17,8 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0"> <small>Profile</small> {{ Auth::user()->name }} </h1>
+                        <h1 class="m-0"> <small>Cabang</small> <span class="profile_name">{{ Auth::user()->name }}</span>
+                        </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -43,9 +44,9 @@
                                         src="{{ asset('dist/img/user4-128x128.jpg') }}" alt="User profile picture">
                                 </div>
 
-                                <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
+                                <h3 class="profile-username text-center profile_name">{{ Auth::user()->name }}</h3>
 
-                                <p class="text-muted text-center">{{ Auth::user()->email }}</p>
+                                <p class="text-muted text-center profile_email">{{ Auth::user()->email }}</p>
 
                                 <ul class="list-group list-group-unbordered mb-3">
                                     <li class="list-group-item">
@@ -53,6 +54,8 @@
                                                 class="badge badge-info right" id="jlh_penebak">1,322</span></a>
                                     </li>
                                 </ul>
+                                <a class="btn btn-outline-info d-flex justify-content-center" target="__blank"
+                                    data-toggle="modal" data-target="#modalEditProfile">Update Profile</a>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -126,13 +129,13 @@
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditSSTitle">Edit Penebak</h5>
+                        <h5 class="modal-title" id="modalEditSSTitle">Edit Profile</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
-                    <form id="formEditSS" method="POST">
+                    <form id="formTambahPenebak" method="POST">
                         <div class="modal-body">
                             <input type="hidden" class="idPenebak" id="idPenebak" name="idPenebak">
                             <div class="form-group row">
@@ -188,7 +191,45 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                            <button type="submit" form="formEditSS" class="btn btn-success">Simpan</button>
+                            <button type="submit" form="formTambahPenebak" class="btn btn-success">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalEditProfile" role="dialog" aria-labelledby="modalEditProfileTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditProfileTitle">Edit Profile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form id="formEditProfile" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" class="inputidUser" id="inputidUser" name="inputidUser">
+                            <div class="form-group row">
+                                <label for="inputNamaProfile" class="col-sm-4 col-form-label">Nama</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="inputNamaProfile" class="form-control" id="inputNamaProfile"
+                                        placeholder="Input Nama">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputEmailProfile" class="col-sm-4 col-form-label">Email</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="inputEmailProfile" class="form-control" id="inputEmailProfile"
+                                        placeholder="Input Email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            <button type="submit" form="formEditProfile" class="btn btn-success">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -227,6 +268,7 @@
         var api_url = "{{ url('api/cabang') . '/' . Request::segment(2) }}";
         var base_url = "{{ url('') }}";
         var jumlah_url = "{{ url('api/penebakcount') . '/' . Request::segment(2) }}";
+        var cabang_url = "{{ url('api/cabang_profile') . '/' . Request::segment(2) }}";
 
         var idena_identity_url = "{{ 'https://scan.idena.org/identity/' }}";
 
@@ -238,25 +280,12 @@
         });
 
         $(document).ready(function() {
+            cabang_profile(cabang_url);
             load_data_jlh(jumlah_url);
             load_data(api_url);
 
         });
-        $("#formEditSS").submit(function(e) {
-            e.preventDefault();
-            var data = $(this).serialize();
-            $.ajax({
-                type: 'POST',
-                data: data,
-                url: "{{ url('api/add_penebak') }}",
-                success: function(data) {
-                    load_data_jlh(jumlah_url);
 
-                    alert(data['success']);
-                    $("#modalEditSS").modal('hide');
-                }
-            });
-        });
 
         function load_data(url) {
             // Setup - add a text input to each footer cell
@@ -325,6 +354,48 @@
                 $("#jlh_penebak").text(data);
             });
         }
+
+        function cabang_profile(url) {
+            $.get(url, function(data, status) {
+                $(".profile_name").text(data.name);
+                $(".profile_email").text(data.email);
+
+                $("#inputidUser").val(data.id)
+                $("#inputNamaProfile").val(data.name)
+                $("#inputEmailProfile").val(data.email)
+            });
+        }
+
+        $("#formTambahPenebak").submit(function(e) {
+            e.preventDefault();
+            var data = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                data: data,
+                url: "{{ url('api/add_penebak') }}",
+                success: function(data) {
+                    load_data_jlh(jumlah_url);
+
+                    alert(data['success']);
+                    $("#modalEditSS").modal('hide');
+                }
+            });
+        });
+
+        $("#formEditProfile").submit(function(e) {
+            e.preventDefault();
+            var data = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                data: data,
+                url: "{{ url('api/save_cabang_profile') }}",
+                success: function(data) {
+                    cabang_profile(cabang_url);
+                    alert(data['success']);
+                    $("#modalEditProfile").modal('hide');
+                }
+            });
+        });
     </script>
 
 @endsection

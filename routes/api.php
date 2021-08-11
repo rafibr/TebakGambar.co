@@ -29,6 +29,9 @@ Route::get('penebak/{id}', [PenebakController::class, 'getPenebak']);
 
 Route::get('penebak/{id}', [PenebakController::class, 'getPenebak']);
 Route::get('penebakcount/{id}', [CabangController::class, 'getCountPenebak']);
+Route::get('cabang_profile/{id}', [CabangController::class, 'getCabangProfile']);
+
+Route::post('save_cabang_profile/', [SaveDataController::class, 'saveCabangProfile']);
 
 Route::post('save_penebak/', [SaveDataController::class, 'savePenebak']);
 Route::post('add_penebak/', [SaveDataController::class, 'addPenebak']);

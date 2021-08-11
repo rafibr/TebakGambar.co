@@ -4,11 +4,22 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Penebak;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class SaveDataController extends Controller
 {
+    public function saveCabangProfile(Request $request)
+    {
+        $data = $request->all();
+        $user = User::find($data['inputidUser']);
+        $user->name = $data['inputNamaProfile'];
+        $user->email = $data['inputEmailProfile'];
+        $user->save();
+        return response()->json(['success' => "Data berhasil di update"]);
+    }
+
     public function savePenebak(Request $request)
     {
         $data = $request->all();
