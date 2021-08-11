@@ -23,6 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('users', [UserController::class, 'getUsers']);
 Route::get('cabang/{id}', [UserController::class, 'getPenebakCabang']);
+Route::get('penebak/{id}', [PenebakController::class, 'getPenebak']);
 
 Route::get('penebak/{id}', [PenebakController::class, 'getPenebak']);
 

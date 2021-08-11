@@ -34,5 +34,10 @@ class DashboardController extends Controller
         $data = User::where("level", '!=', 99)->get();
         return view('penebak',['data' => $data]);
     }
+    
+    public function penebakView()
+    {
+        return view('penebak');
+    }
     // /. function for View
 }
