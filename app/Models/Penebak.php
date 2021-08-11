@@ -9,4 +9,15 @@ class Penebak extends Model
 {
     use HasFactory;
     protected $table = "penebak";
+
+
+    public function dompet()
+    {
+        return $this->belongsTo('App\Models\DompetDigital', 'tipe_pembayaran', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'kepala_cabang', 'id');
+    }
 }

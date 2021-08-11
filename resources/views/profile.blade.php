@@ -14,7 +14,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0"> <small>Profile</small> {{ Auth::user()->name }} </h1>
@@ -33,7 +33,7 @@
 
         <!-- Main content -->
         <div class="content">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-2">
                         <div class="card card-primary card-outline">
@@ -51,14 +51,6 @@
                                     <li class="list-group-item">
                                         <b><i class="fas fa-user"></i> Penebak</b> <a class="float-right"><span
                                                 class="badge badge-info right">1,322</span></a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b><i class="fas fa-check-circle" style="color:#20c997"></i> Berhasil</b> <a
-                                            class="float-right"><span class="badge badge-success right">522</span></a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b><i class="fas fa-times-circle" style="color:#dc3545"></i> Gagal</b> <a
-                                            class="float-right"><span class="badge badge-danger right">2,551</span></a>
                                     </li>
                                 </ul>
                             </div>
@@ -82,13 +74,13 @@
                             <div class="card-body">
 
                                 <table id="tablePenebak" width="100%"
-                                    class="table table-hover table-bordered table-striped">
+                                    class="table table-responsive table-hover table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>Nama</th>
                                             <th>Address</th>
-                                            <th>State</th>
-                                            <th>Age</th>
+                                            {{-- <th>State</th>
+                                            <th>Age</th> --}}
                                             <th>Pembayaran</th>
                                             <th>No. Pembayaran</th>
                                             <th>Aksi</th>
@@ -100,8 +92,8 @@
                                         <tr>
                                             <th>Nama</th>
                                             <th>Address</th>
-                                            <th>State</th>
-                                            <th>Age</th>
+                                            {{-- <th>State</th>
+                                            <th>Age</th> --}}
                                             <th>Pembayaran</th>
                                             <th>No. Pembayaran</th>
                                             <th>Aksi</th>
@@ -148,7 +140,7 @@
         var api_url = "{{ url('api/cabang') . '/' . Request::segment(2) }}";
         var base_url = "{{ url('') }}";
 
-        var idena_identity = "{{ 'https://scan.idena.org/identity/' }}";
+        var idena_identity_url = "{{ 'https://scan.idena.org/identity/' }}";
         $(document).ready(function() {
             // Setup - add a text input to each footer cell
             $('#tablePenebak tfoot th').each(function() {
@@ -169,36 +161,21 @@
                         "data": "alamat_idena"
                     },
                     // TODO : get age dan state
+
                     {
-                        "data": "alamat_idena",
-                        render: function(data, type, row) {
-                            $.get("https://api.idena.io/api/Identity/" + data, function(data,
-                                status) {
-                                return data.state;
-                            });
-                        }
-                    },
-                    {
-                        "data": "alamat_idena",
-                        render: function(data, type, row) {
-                            $.get("https://api.idena.io/api/Identity/" + data, function(data,
-                                status) {
-                                return data.state;
-                            });
-                        }
-                    },
-                    {
-                        "data": "tipe_pembayaran"
+                        "data": "nama_dompet"
                     },
                     {
                         "data": "no_hp_pembayaran"
                     },
                     {
-                        "data": "id",
+                        "data": "penebak_id",
                         render: function(data, type, row) {
                             return '<div class="text-center"><a href = "' + base_url +
-                                '/profile/" class = "btn btn-primary" > Detail </a><a href = "' +
-                                idena_identity + '' + row.alamat_idena +
+                                '/penebak/' + row.penebak_id +
+                                '" class = "btn btn-primary" onclick="getPenebak(' + row
+                                .penebak_id + ')" > Detail </a>&nbsp<a href = "' +
+                                idena_identity_url + '' + row.alamat_idena +
                                 '" class = "btn btn-success" > Identity </a></div> '
                         }
                     }
@@ -217,11 +194,13 @@
                         });
                     });
                 },
-                "responsive": true,
+                "responsive": false,
                 "lengthChange": false,
                 "autoWidth": true,
-                "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
+                "paging": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#tablePenebak_wrapper .col-md-6:eq(0)');
+
         });
     </script>
 

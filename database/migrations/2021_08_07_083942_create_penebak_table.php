@@ -17,9 +17,10 @@ class CreatePenebakTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('kepala_cabang');
-            $table->string('alamat_idena');
-            $table->string('tipe_pembayaran')->comment = "1: Dana, 2: Shopee Pay, 3: LinkAja";
-            $table->string('no_hp_pembayaran');
+            $table->string('alamat_idena')->nullable();
+            $table->string('tipe_pembayaran')->nullable()->comment = "1: Dana, 2: Shopee Pay, 3: LinkAja";
+            $table->string('no_hp_pembayaran')->nullable();
+            $table->string('image_dompet')->nullable();
             $table->timestamps();
         });
     }

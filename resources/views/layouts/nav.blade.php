@@ -21,9 +21,13 @@
                 @if (Auth::user()->level == 99)
                     <li class="nav-item font-weight-bold">
                         <a href="{{ url('cabang') }}"
-                            class="nav-link {{ Request::is('cabang')||Request::is('profile') ? 'active' : '' }}">Cabang</a>
+                            class="nav-link {{ Request::is('cabang') ? 'active' : '' }}">Cabang</a>
                     </li>
                 @endif
+                <li class="nav-item font-weight-bold">
+                    <a href="{{ url('profile/' . Auth::user()->id) }}"
+                        class="nav-link {{ Request::segment(1) == 'profile' ? 'active' : '' }}">Profile</a>
+                </li>
             </ul>
 
         </div>

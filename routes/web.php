@@ -31,5 +31,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home', [DashboardController::class, 'homeView']);
     Route::get('cabang', [DashboardController::class, 'userView']);
     Route::get('profile/{id}', [DashboardController::class, 'profileView']);
+    Route::get('penebak/{id}', [DashboardController::class, 'penebakView']);
 
 });
