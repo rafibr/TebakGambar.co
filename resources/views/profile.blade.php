@@ -36,31 +36,30 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-2">
-                        <div class="card card-primary card-outline">
-                            <div class="card-body box-profile">
-                                <div class="text-center">
-                                    <img class="profile-user-img img-fluid img-circle"
-                                        src="{{ asset('dist/img/user4-128x128.jpg') }}" alt="User profile picture">
-                                </div>
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-user"></i></span>
 
-                                <h3 class="profile-username text-center profile_name">{{ Auth::user()->name }}</h3>
-
-                                <p class="text-muted text-center profile_email">{{ Auth::user()->email }}</p>
-
-                                <ul class="list-group list-group-unbordered mb-3">
-                                    <li class="list-group-item">
-                                        <b><i class="fas fa-user"></i> Penebak</b> <a class="float-right"><span
-                                                class="badge badge-info right" id="jlh_penebak">1,322</span></a>
-                                    </li>
-                                </ul>
-                                <a class="btn btn-outline-info d-flex justify-content-center" target="__blank"
-                                    data-toggle="modal" data-target="#modalEditProfile">Update Profile</a>
+                            <div class="info-box-content">
+                                <span class="info-box-text">{{ Auth::user()->name }}
+                                    <small class="text-secondary">{{ Auth::user()->email }}</small></span>
+                                <span class="info-box-number">
+                                    <span id="jlh_penebak">1</span>
+                                    <small class="text-secondary">(Penebak)</small>
+                                </span>
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.info-box-content -->
                         </div>
+                        <!-- /.info-box -->
                     </div>
-                    <div class="col-md-10 ccol ">
+                    <!-- /.col -->
+
+                    <!-- fix for small devices only -->
+                    <div class="clearfix hidden-md-up"></div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col ">
                         <div class="card">
                             <div class="card-header bg-secondary">
                                 <h5 class="card-title">Daftar Penebak</h5>
@@ -78,20 +77,18 @@
                                 <div class="row mb-2 text-right ">
                                     <div class="col">
 
-                                        <a class="btn btn-lg btn-info justify-content-center" target="__blank"
-                                            data-toggle="modal" data-target="#modalEditSS">Tambah Penebak</a>
+                                        <a class="btn btn-info justify-content-center" target="__blank" data-toggle="modal"
+                                            data-target="#modalEditSS">Tambah Penebak</a>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col d-flex justify-content-center">
                                         <table id="tablePenebak" width="100%"
                                             class="table table-responsive table-hover table-bordered table-striped">
                                             <thead>
                                                 <tr>
                                                     <th>Nama</th>
                                                     <th>Address</th>
-                                                    {{-- <th>State</th>
-                                                    <th>Age</th> --}}
                                                     <th>Pembayaran</th>
                                                     <th>No. Pembayaran</th>
                                                     <th>Aksi</th>
@@ -103,8 +100,6 @@
                                                 <tr>
                                                     <th>Nama</th>
                                                     <th>Address</th>
-                                                    {{-- <th>State</th>
-                                                    <th>Age</th> --}}
                                                     <th>Pembayaran</th>
                                                     <th>No. Pembayaran</th>
                                                     <th>Aksi</th>
@@ -198,7 +193,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalEditProfile" role="dialog" aria-labelledby="modalEditProfileTitle"
+        {{-- <div class="modal fade" id="modalEditProfile" role="dialog" aria-labelledby="modalEditProfileTitle"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
@@ -230,6 +225,30 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                             <button type="submit" form="formEditProfile" class="btn btn-success">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> --}}
+
+        <div class="modal fade" id="warningDelete" role="dialog" aria-labelledby="warningDeleteTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="warningDeleteTitle">Edit Profile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form id="formDeletePenebak" method="POST">
+                        <div class="modal-body">
+                            <input type="text" class="inputidPenebak" id="inputidPenebak" name="inputidPenebak">
+                            <h3>Yakin ingin menghapus penebak ini?</h3>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            <button type="submit" form="formDeletePenebak" class="btn btn-success">Simpan</button>
                         </div>
                     </form>
                 </div>
@@ -303,7 +322,12 @@
                         "data": "name"
                     },
                     {
-                        "data": "alamat_idena"
+                        "data": "alamat_idena",
+                        render: function(data, type, row) {
+                            return '<a href = "' +
+                                idena_identity_url + '' + data +
+                                '" class = "btn btn-success" > ' + data + ' </a>'
+                        }
                     },
                     {
                         "data": "dompet_digital.nama_dompet",
@@ -320,9 +344,10 @@
                             return '<div class="text-center"><a href = "' + base_url +
                                 '/penebak/' + row.penebak_id +
                                 '" class = "btn btn-primary" onclick="getPenebak(' + row
-                                .penebak_id + ')" > Detail </a>&nbsp<a href = "' +
-                                idena_identity_url + '' + row.alamat_idena +
-                                '" class = "btn btn-success" > Identity </a></div> '
+                                .penebak_id +
+                                ')" > Detail </a>&nbsp<a href = "#" class = "btn btn-danger" onclick="deletePenebak(' +
+                                row.penebak_id +
+                                ')" > Hapus </a></div> '
                         }
                     }
                 ],
@@ -378,6 +403,8 @@
 
                     alert(data['success']);
                     $("#modalEditSS").modal('hide');
+                    location.reload();
+
                 }
             });
         });
@@ -396,6 +423,25 @@
                 }
             });
         });
+        $("#formDeletePenebak").submit(function(e) {
+            e.preventDefault();
+            var data = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                data: data,
+                url: "{{ url('api/delete_penebak') }}",
+                success: function(data) {
+                    alert(data['success']);
+                    location.reload();
+                }
+            });
+        });
+
+        function deletePenebak(id) {
+            $('#warningDelete').modal('show')
+            $("#inputidPenebak").val(id);
+
+        }
     </script>
 
 @endsection

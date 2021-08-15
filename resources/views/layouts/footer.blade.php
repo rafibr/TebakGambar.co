@@ -1,9 +1,12 @@
-<!-- Main Footer -->
-<footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
-    </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  <!-- Footer -->
+  <footer class="text-center text-lg-start bg-dark text-muted">
+
+
+      <!-- Copyright -->
+      <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+          © 2021 Copyright:
+          <a class="text-reset fw-bold" href="{{ url('') }}">TebakGambar.co</a>
+      </div>
+      <!-- Copyright -->
   </footer>
+  <!-- Footer -->

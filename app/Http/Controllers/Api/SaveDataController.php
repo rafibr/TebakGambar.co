@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Storage;
 
 class SaveDataController extends Controller
 {
+    public function deletePenebak(Request $request)
+    {
+        $data = $request->all();
+        $user = Penebak::find($data['inputidPenebak'])->delete();
+        return response()->json(['success' => "Data berhasil di hapus"]);
+    }
     public function saveCabangProfile(Request $request)
     {
         $data = $request->all();
