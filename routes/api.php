@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\CabangController;
+use App\Http\Controllers\Api\DompetController;
 use App\Http\Controllers\Api\PenebakController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SaveDataController;
+use App\Http\Controllers\Api\ValidasiController;
 use App\Models\Penebak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,3 +40,13 @@ Route::post('save_penebak/', [SaveDataController::class, 'savePenebak']);
 Route::post('add_penebak/', [SaveDataController::class, 'addPenebak']);
 
 Route::post('save_ssdompet/', [SaveDataController::class, 'saveSSDompet']);
+
+Route::get('dompet', [DompetController::class, 'getDompet']);
+Route::post('add_dompet/', [SaveDataController::class, 'addDompet']);
+Route::post('edit_dompet/', [SaveDataController::class, 'editDompet']);
+Route::post('delete_dompet/', [SaveDataController::class, 'deleteDompet']);
+
+Route::get('validasi', [ValidasiController::class, 'getValidasi']);
+Route::post('add_validasi/', [SaveDataController::class, 'addValidasi']);
+Route::post('edit_validasi/', [SaveDataController::class, 'editValidasi']);
+Route::post('delete_validasi/', [SaveDataController::class, 'deleteValidasi']);

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DompetDigital;
 use App\Models\Penebak;
 use App\Models\User;
+use App\Models\Validasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -63,6 +65,55 @@ class SaveDataController extends Controller
         $penebak = Penebak::find($idPenebak);
         $penebak->image_dompet = $imgname;
         $penebak->save();
+        return response()->json(['success' => "Data berhasil di update"]);
+    }
+
+
+    // ------------------------------------------------------
+    public function addDompet(Request $request)
+    {
+        $data = $request->all();
+        $dompet = new DompetDigital;
+        $dompet->nama_dompet = $data['inputNamaDompet'];
+        $dompet->save();
+        return response()->json(['success' => "Data berhasil di update"]);
+    }
+    public function deleteDompet(Request $request)
+    {
+        $data = $request->all();
+        $dompet = DompetDigital::find($data['inputDeleteIdDompet'])->delete();
+        return response()->json(['success' => "Data berhasil di hapus"]);
+    }
+    public function editDompet(Request $request)
+    {
+        $data = $request->all();
+        $dompet = DompetDigital::find($data['inputeditiddompet']);
+        $dompet->nama_dompet = $data['inputeditNamaDompet'];
+        $dompet->save();
+        return response()->json(['success' => "Data berhasil di update"]);
+    }
+    // ------------------------------------------------------
+
+    public function addValidasi(Request $request)
+    {
+        $data = $request->all();
+        $validasi = new Validasi;
+        $validasi->tanggal_validasi = $data['inputTanggalValidasi'];
+        $validasi->save();
+        return response()->json(['success' => "Data berhasil di update"]);
+    }
+    public function deleteValidasi(Request $request)
+    {
+        $data = $request->all();
+        $validasi = Validasi::find($data['inputDeleteIdValidasi'])->delete();
+        return response()->json(['success' => "Data berhasil di hapus"]);
+    }
+    public function editValidasi(Request $request)
+    {
+        $data = $request->all();
+        $validasi = Validasi::find($data['inputeditidValidasi']);
+        $validasi->tanggal_validasi = $data['inputeditTanggalValidasi'];
+        $validasi->save();
         return response()->json(['success' => "Data berhasil di update"]);
     }
 }

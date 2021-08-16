@@ -40,6 +40,16 @@ class DashboardController extends Controller
         return view('penebak', ['data' => $data, 'dataDompet' => $dataDompet]);
     }
 
+    public function dompetView()
+    {
+        return view('dompet');
+    }
+
+    public function validasiView()
+    {
+        return view('validasi');
+    }
+
     // public function penebakView()
     // {
     //     return view('penebak');
