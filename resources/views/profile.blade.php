@@ -326,7 +326,7 @@
                         render: function(data, type, row) {
                             return '<a href = "' +
                                 idena_identity_url + '' + data +
-                                '" class = "btn btn-success" > ' + data + ' </a>'
+                                '" class = "btn btn-success" target="_blank"> ' + data + ' </a>'
                         }
                     },
                     {

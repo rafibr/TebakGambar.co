@@ -51,8 +51,14 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="row mb-2 text-right ">
-                                    <div class="col">
+                                <div class="row mb-2  ">
+                                    <div class="col-md-8 text-left">
+                                        <h6 class="m-0">Validasi Berikutnya : <small
+                                                class="badge badge-secondary nextValidation">Jadwal
+                                                Validasi</small>
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-4 text-right">
 
                                         <a class="btn btn-info justify-content-center" target="__blank" data-toggle="modal"
                                             data-target="#modalTambah">Tambah Jadwal</a>
@@ -106,6 +112,14 @@
                     <form id="formTambahValidasi" method="POST">
                         <div class="modal-body">
                             <div class="form-group row">
+                                <div class="col-sm-8 text-left">
+                                    <h6 class="m-0">Validasi Berikutnya : <small
+                                            class="badge badge-secondary nextValidation">Jadwal
+                                            Validasi</small>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="inputTanggalValidasi" class="col-sm-4 col-form-label">Tanggal Validasi</label>
                                 <div class="col-sm-8">
                                     <input type="date" name="inputTanggalValidasi" class="form-control"
@@ -128,7 +142,7 @@
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditValidasiTitle">Edit Profile</h5>
+                        <h5 class="modal-title" id="modalEditValidasiTitle">Tambah jadwal</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -217,6 +231,7 @@
 
         $(document).ready(function() {
             load_data(api_url);
+            load_data_nextValidation("https://api.idena.io/api/Epoch/Last");
         });
 
 
@@ -273,10 +288,25 @@
                 "lengthChange": false,
                 "autoWidth": true,
                 "paging": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#tableValidasi_wrapper .col-md-6:eq(0)');
         }
 
+        function load_data_nextValidation(url) {
+            $.get(url, function(data) {
+
+                var tglValidasi = (new Date(data.result.validationTime));
+                var tgl = (tglValidasi.getDate());
+                var bulan = (tglValidasi.getMonth());
+                var tahun = (tglValidasi.getFullYear());
+                var datetime = tahun + "-" + bulan + "-" + tgl;
+                var datetimeinput = tglValidasi.toISOString().split('T')[0];;
+
+                $(".nextValidation").html(tampilTanggal(datetime));
+
+                $("#inputTanggalValidasi").val(datetimeinput);
+            });
+        }
         $("#formTambahValidasi").submit(function(e) {
             e.preventDefault();
             var data = $(this).serialize();
@@ -326,6 +356,7 @@
         });
 
         function editValidasi(id, tanggalValidasi) {
+            console.log(tanggalValidasi);
             $('#modalEditValidasi').modal('show')
             $("#inputeditidValidasi").val(id);
             $("#inputeditTanggalValidasi").val(tanggalValidasi);

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CabangController;
 use App\Http\Controllers\Api\DompetController;
+use App\Http\Controllers\Api\historyValidasiController;
 use App\Http\Controllers\Api\PenebakController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SaveDataController;
@@ -50,3 +51,6 @@ Route::get('validasi', [ValidasiController::class, 'getValidasi']);
 Route::post('add_validasi/', [SaveDataController::class, 'addValidasi']);
 Route::post('edit_validasi/', [SaveDataController::class, 'editValidasi']);
 Route::post('delete_validasi/', [SaveDataController::class, 'deleteValidasi']);
+
+
+Route::get('history/{id}', [historyValidasiController::class, 'getHistory']);
