@@ -308,7 +308,7 @@
                                     </div>
 
                                     {{-- TGL VALIDASI --}}
-
+                                    TODO: Tambah pilihan tanggal validasi, simpan, crud history validasi
                                     {{-- TGL VALIDASI /end --}}
 
                                     <div class="form-group row">
