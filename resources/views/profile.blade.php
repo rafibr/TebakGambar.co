@@ -89,8 +89,10 @@
                                                 <tr>
                                                     <th>Nama</th>
                                                     <th>Address</th>
-                                                    <th>Pembayaran</th>
+                                                    <th>Dompet Pembayaran</th>
                                                     <th>No. Pembayaran</th>
+                                                    <th>State</th>
+                                                    <th>Pembayaran</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
@@ -100,8 +102,10 @@
                                                 <tr>
                                                     <th>Nama</th>
                                                     <th>Address</th>
-                                                    <th>Pembayaran</th>
+                                                    <th>Dompet Pembayaran</th>
                                                     <th>No. Pembayaran</th>
+                                                    <th>State</th>
+                                                    <th>Pembayaran</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </tfoot>
@@ -255,6 +259,33 @@
             </div>
         </div>
 
+        <div class="modal fade" id="modalQRDompet" role="dialog" aria-labelledby="modalQRDompetTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalQRDompetTitle">Dompet Digital</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <a id="ss_dompet_parent" href="{{ url('storage/SSDompet/background.jpg') }}"
+                                    data-toggle="lightbox" data-title="SS Dompet Digital" data-gallery="gallery">
+                                    <img id="ss_dompet" src="{{ url('storage/SSDompet/background.jpg') }}"
+                                        class="img-fluid mb-2" alt="SS Dompet Digital" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
     <!-- /.content-wrapper -->
 
@@ -290,6 +321,7 @@
         var cabang_url = "{{ url('api/cabang_profile') . '/' . Request::segment(2) }}";
 
         var idena_identity_url = "{{ 'https://scan.idena.org/identity/' }}";
+        var image_url = "{{ url('storage/SSDompet') . '/' }}";
 
         $(function() {
             //Initialize Select2 Elements
@@ -299,6 +331,9 @@
         });
 
         $(document).ready(function() {
+
+            $('#inputKepalaCabang').val({{ Request::segment(2) }});
+            $('#inputKepalaCabang').select2().trigger('change');
             cabang_profile(cabang_url);
             load_data_jlh(jumlah_url);
             load_data(api_url);
@@ -307,11 +342,11 @@
 
 
         function load_data(url) {
-            // Setup - add a text input to each footer cell
-            $('#tablePenebak tfoot th').each(function() {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-            });
+            // // Setup - add a text input to each footer cell
+            // $('#tablePenebak tfoot th').each(function() {
+            //     var title = $(this).text();
+            //     $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+            // });
 
             $("#tablePenebak").DataTable({
                 dom: 'Bfrtip',
@@ -332,11 +367,76 @@
                     {
                         "data": "dompet_digital.nama_dompet",
                         render: function(data, type, row) {
-                            return row.nama_dompet;
+                            return '<div class="text-center"><a class = "btn btn-warning" onclick="getQr(\'' +
+                                row.image_dompet +
+                                '\')" > Show Qr </a></div>';
                         }
                     },
                     {
                         "data": "no_hp_pembayaran"
+                    },
+                    {
+                        "title": "Status",
+                        render: function(data, type, row) {
+                            var state = row.state;
+                            var nilai = row.nilai;
+                            status = "";
+
+                            if (state == "Newbie") {
+                                status = "Newbie";
+                            } else if (state == "Verified") {
+                                if (row.prevstate == "Newbie") {
+                                    status = "Newbie => Verified";
+                                } else {
+                                    if (nilai < 100) {
+                                        status = "Verified < 100%";
+                                    } else {
+                                        status = "Verified 100%";
+                                    }
+                                }
+                            } else if (state == "Human") {
+                                if (nilai < 100) {
+                                    status = "Human < 100%";
+                                } else {
+                                    status = "Human 100%";
+                                }
+                            } else {
+                                status = "Gagal";
+                            }
+
+                            return status;
+                        }
+                    },
+                    {
+                        render: function(data, type, row) {
+                            var state = row.state;
+                            var nilai = row.nilai;
+                            pembayaran = "";
+
+                            if (state == "Newbie") {
+                                pembayaran = "Rp 20.000";
+                            } else if (state == "Verified") {
+                                if (row.prevstate == "Newbie") {
+                                    pembayaran = "Rp 75.000";
+                                } else {
+                                    if (nilai < 100) {
+                                        pembayaran = "Rp 35.000";
+                                    } else {
+                                        pembayaran = "Rp 40.000";
+                                    }
+                                }
+                            } else if (state == "Human") {
+                                if (nilai < 100) {
+                                    pembayaran = "Rp 40.000";
+                                } else {
+                                    pembayaran = "Rp 50.000";
+                                }
+                            } else {
+                                pembayaran = "Rp 10.000";
+                            }
+
+                            return pembayaran;
+                        }
                     },
                     {
                         "data": "penebak.id",
@@ -440,6 +540,12 @@
         function deletePenebak(id) {
             $('#warningDelete').modal('show')
             $("#inputidPenebak").val(id);
+        }
+
+        function getQr(image) {
+            $('#modalQRDompet').modal('show')
+            $("#ss_dompet").attr("src", image_url + image);
+            $("#ss_dompet_parent").attr("href", image_url + image)
 
         }
     </script>
