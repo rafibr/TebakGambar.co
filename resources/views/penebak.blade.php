@@ -435,10 +435,22 @@
 
                     idna_address = $("#idna_address").text();
                     age_url = "https://api.idena.io/api/Identity/" + idna_address + "/Age";
-                    $.get("https://api.idena.io/api/Epoch/Last", function(data) {
-                        epoch = (data.result.epoch) - 1;
-                        $("#inputEpoch").val(epoch);
-                    });
+                    $.ajax({
+                        url: "https://api.idena.io/api/Epoch/Last",
+                        type: 'GET',
+                        dataType: 'json',
+                        cors: true,
+                        contentType: 'application/json',
+                        secure: true,
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                        },
+                        success: function(data) {
+                            epoch = (data.result.epoch) - 1;
+                            $("#inputEpoch").val(epoch);
+                        }
+                    })
+
 
                     $.get(age_url, function(data) {
                         $("#inputAge").val(data.result);
