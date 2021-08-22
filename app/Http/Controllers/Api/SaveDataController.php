@@ -55,7 +55,9 @@ class SaveDataController extends Controller
         return response()->json(['success' => "Data berhasil diupdate"]);
     }
 
-    public function saveValidasi(Request $request)
+    // ------------------------------------------------------
+
+    public function saveHistory(Request $request)
     {
         $data = $request->all();
         $historyValidasi = new HistoryValidasi;
@@ -69,6 +71,30 @@ class SaveDataController extends Controller
         $historyValidasi->save();
         return response()->json(['success' => "Data berhasil disimpan"]);
     }
+
+    public function editHistory(Request $request)
+    {
+        $data = $request->all();
+        $historyValidasi = HistoryValidasi::find($data['idEditHistory']);
+        $historyValidasi->id_validasi = $data['inputEditTglValidasi'];
+        $historyValidasi->epoch = $data['inputEditEpoch'];
+        $historyValidasi->age = $data['inputEditAge'];
+        $historyValidasi->prevstate = $data['inputEditPrevState'];
+        $historyValidasi->state = $data['inputEditState'];
+        $historyValidasi->nilai = $data['inputEditNilai'];
+        $historyValidasi->save();
+        return response()->json(['success' => "Data berhasil disimpan"]);
+    }
+
+
+    public function deleteHistory(Request $request)
+    {
+        $data = $request->all();
+        $historyValidasi = HistoryValidasi::find($data['idHistoryDelete'])->delete();
+        return response()->json(['success' => "Data berhasil di hapus"]);
+    }
+
+    // ------------------------------------------------------
 
     public function saveSSDompet(Request $request)
     {

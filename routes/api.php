@@ -39,7 +39,9 @@ Route::post('delete_penebak/', [SaveDataController::class, 'deletePenebak']);
 
 Route::post('save_penebak/', [SaveDataController::class, 'savePenebak']);
 Route::post('add_penebak/', [SaveDataController::class, 'addPenebak']);
-Route::post('save_validasi/', [SaveDataController::class, 'saveValidasi']);
+Route::post('save_history/', [SaveDataController::class, 'saveHistory']);
+Route::post('edit_history/', [SaveDataController::class, 'editHistory']);
+Route::post('delete_history/', [SaveDataController::class, 'deleteHistory']);
 
 Route::post('save_ssdompet/', [SaveDataController::class, 'saveSSDompet']);
 
