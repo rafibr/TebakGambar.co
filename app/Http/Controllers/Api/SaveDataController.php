@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\DompetDigital;
+use App\Models\HistoryValidasi;
 use App\Models\Penebak;
 use App\Models\User;
 use App\Models\Validasi;
@@ -16,7 +17,7 @@ class SaveDataController extends Controller
     {
         $data = $request->all();
         $user = Penebak::find($data['inputidPenebak'])->delete();
-        return response()->json(['success' => "Data berhasil di hapus"]);
+        return response()->json(['success' => "Data berhasil dihapus"]);
     }
     public function saveCabangProfile(Request $request)
     {
@@ -25,7 +26,7 @@ class SaveDataController extends Controller
         $user->name = $data['inputNamaProfile'];
         $user->email = $data['inputEmailProfile'];
         $user->save();
-        return response()->json(['success' => "Data berhasil di update"]);
+        return response()->json(['success' => "Data berhasil diupdate"]);
     }
 
     public function savePenebak(Request $request)
@@ -38,7 +39,7 @@ class SaveDataController extends Controller
         $penebak->no_hp_pembayaran = $data['inputNoPembayaran'];
         $penebak->kepala_cabang = $data['inputKepalaCabang'];
         $penebak->save();
-        return response()->json(['success' => "Data berhasil di update"]);
+        return response()->json(['success' => "Data berhasil diupdate"]);
     }
 
     public function addPenebak(Request $request)
@@ -51,7 +52,22 @@ class SaveDataController extends Controller
         $penebak->no_hp_pembayaran = $data['inputNoPembayaran'];
         $penebak->kepala_cabang = $data['inputKepalaCabang'];
         $penebak->save();
-        return response()->json(['success' => "Data berhasil di update"]);
+        return response()->json(['success' => "Data berhasil diupdate"]);
+    }
+
+    public function saveValidasi(Request $request)
+    {
+        $data = $request->all();
+        $historyValidasi = new HistoryValidasi;
+        $historyValidasi->id_penebak = $data['idPenebak'];
+        $historyValidasi->id_validasi = $data['inputTglValidasi'];
+        $historyValidasi->epoch = $data['inputEpoch'];
+        $historyValidasi->age = $data['inputAge'];
+        $historyValidasi->prevstate = $data['inputPrevState'];
+        $historyValidasi->state = $data['inputState'];
+        $historyValidasi->nilai = $data['inputNilai'];
+        $historyValidasi->save();
+        return response()->json(['success' => "Data berhasil disimpan"]);
     }
 
     public function saveSSDompet(Request $request)
@@ -65,7 +81,7 @@ class SaveDataController extends Controller
         $penebak = Penebak::find($idPenebak);
         $penebak->image_dompet = $imgname;
         $penebak->save();
-        return response()->json(['success' => "Data berhasil di update"]);
+        return response()->json(['success' => "Data berhasil diupdate"]);
     }
 
 

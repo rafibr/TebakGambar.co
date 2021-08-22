@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\DompetDigital;
+use App\Models\HistoryValidasi;
 use App\Models\User;
+use App\Models\Validasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,7 +39,8 @@ class DashboardController extends Controller
     {
         $data = User::where("level", '!=', 99)->get();
         $dataDompet = DompetDigital::all();
-        return view('penebak', ['data' => $data, 'dataDompet' => $dataDompet]);
+        $dataValidasi = Validasi::all();
+        return view('penebak', ['data' => $data, 'dataDompet' => $dataDompet, 'dataValidasi' => $dataValidasi]);
     }
 
     public function dompetView()
