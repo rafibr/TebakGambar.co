@@ -522,10 +522,11 @@
                 var idena_identity_url = "https://scan.idena.org/identity/";
 
 
-                // https://api.idena.io/api/Identity/0xdb322d16abe145d4e2d15d907f49a80d2fe2dc93 (get identity)
                 // https://api.idena.io/api/Identity/0xdb322d16abe145d4e2d15d907f49a80d2fe2dc93/Age (get age)
 
                 // https://api.idena.io/api/Epoch/Last(get Last Epoch)
+
+                // https://api.idena.io/api/Identity/0xdb322d16abe145d4e2d15d907f49a80d2fe2dc93 (get identity)
                 // https://api.idena.io/api/Epoch/72/Identity/0xdb322d16abe145d4e2d15d907f49a80d2fe2dc93 (get state, prevstate, point)
 
                 var idna_address;
@@ -595,10 +596,11 @@
                         $("#inputPrevState").val(data.result.prevState);
                         $("#inputState").val(data.result.state);
 
-                        flipsCount = data.result.longAnswers.flipsCount;
-                        point = data.result.longAnswers.point;
+                        flipsCount = data.result.totalShortAnswers.flipsCount;
+                        point = data.result.totalShortAnswers.point;
 
                         nilai = ((point / flipsCount) * 100).toFixed(3);
+                        console.log(nilai);
 
                         $("#inputNilai").val(nilai);
                     });
@@ -612,8 +614,8 @@
                         $("#inputEditPrevState").val(data.result.prevState);
                         $("#inputEditState").val(data.result.state);
 
-                        flipsCount = data.result.longAnswers.flipsCount;
-                        point = data.result.longAnswers.point;
+                        flipsCount = data.result.totalShortAnswers.flipsCount;
+                        point = data.result.totalShortAnswers.point;
 
                         nilai = ((point / flipsCount) * 100).toFixed(3);
 

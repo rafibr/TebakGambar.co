@@ -14,7 +14,7 @@ class CreateDompetDigitalTable extends Migration
     public function up()
     {
         Schema::create('dompet_digital', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id_dompet');
             $table->string('nama_dompet');
             $table->timestamps();
         });

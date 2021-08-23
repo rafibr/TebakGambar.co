@@ -14,12 +14,12 @@ class CreatePenebakTable extends Migration
     public function up()
     {
         Schema::create('penebak', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('kepala_cabang');
+            $table->increments('id_penebak');
+            $table->string('name_penebak');
+            $table->string('id_kepala_cabang');
             $table->string('alamat_idena')->nullable();
-            $table->string('tipe_pembayaran')->nullable()->comment = "1: Dana, 2: Shopee Pay, 3: LinkAja";
-            $table->string('no_hp_pembayaran')->nullable();
+            $table->string('id_dompet')->nullable()->comment = "1: Dana, 2: Shopee Pay, 3: LinkAja";
+            $table->string('no_pembayaran')->nullable();
             $table->string('image_dompet')->nullable();
             $table->timestamps();
         });

@@ -15,14 +15,16 @@ class CreateValidasiHistory extends Migration
     {
 
         Schema::create('validasi_history', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id_history');
             $table->string('id_penebak');
-            $table->string('id_validasi');
             $table->string('epoch')->nullable();
             $table->string('age')->nullable();
             $table->string('prevstate')->nullable();
             $table->string('state')->nullable();
             $table->string('nilai')->nullable();
+            $table->string('status_nilai')->nullable();
+            $table->string('jumlah_pembayaran')->nullable();
+            $table->string('status_pembayaran')->nullable();
             $table->timestamps();
         });
     }

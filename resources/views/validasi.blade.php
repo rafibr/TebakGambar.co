@@ -294,13 +294,12 @@
 
         function load_data_nextValidation(url) {
             $.get(url, function(data) {
-
                 var tglValidasi = (new Date(data.result.validationTime));
                 var tgl = (tglValidasi.getDate());
-                var bulan = (tglValidasi.getMonth());
+                var bulan = ("0" + (tglValidasi.getMonth() + 1)).slice(-2);
                 var tahun = (tglValidasi.getFullYear());
                 var datetime = tahun + "-" + bulan + "-" + tgl;
-                var datetimeinput = tglValidasi.toISOString().split('T')[0];;
+                var datetimeinput = tglValidasi.toISOString().split('T')[0];
 
                 $(".nextValidation").html(tampilTanggal(datetime));
 

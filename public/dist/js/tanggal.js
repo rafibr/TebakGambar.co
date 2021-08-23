@@ -9,6 +9,7 @@ function tampilTanggal(tanggal) {
     var jam = date.getHours();
     var menit = date.getMinutes();
     var detik = date.getSeconds();
+
     switch (hari) {
         case 0:
             hari = "Minggu";
