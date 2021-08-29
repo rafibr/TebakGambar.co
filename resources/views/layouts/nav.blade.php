@@ -40,11 +40,6 @@
                                     class="nav-link {{ Request::is('cabang') ? 'active' : '' }}">Cabang</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a href="{{ url('validasi') }}"
-                                    class="nav-link {{ Request::is('validasi') ? 'active' : '' }}">Validasi</a>
-                            </li>
-
                             <li class="dropdown-divider"></li>
 
                             <li class="nav-item">

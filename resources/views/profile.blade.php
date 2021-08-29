@@ -91,24 +91,15 @@
                                                     <th>Address</th>
                                                     <th>Dompet Pembayaran</th>
                                                     <th>No. Pembayaran</th>
-                                                    {{-- <th>State</th>
-                                                    <th>Pembayaran</th> --}}
+                                                    <th>Status Nilai</th>
+                                                    <th>Pembayaran</th>
+                                                    <th>Status Pembayaran</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>Nama</th>
-                                                    <th>Address</th>
-                                                    <th>Dompet Pembayaran</th>
-                                                    <th>No. Pembayaran</th>
-                                                    {{-- <th>State</th>
-                                                    <th>Pembayaran</th> --}}
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </tfoot>
+
                                         </table>
                                     </div>
                                 </div>
@@ -122,13 +113,12 @@
 
         </div>
         <!-- /.content -->
-
         {{-- Modal --}}
         <div class="modal fade" id="modalEditSS" role="dialog" aria-labelledby="modalEditSSTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditSSTitle">Edit Profile</h5>
+                        <h5 class="modal-title" id="modalEditSSTitle">Tambah Penebak</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -148,12 +138,14 @@
                                 <label for="inputKepalaCabang" class="col-sm-4 col-form-label">Kepala Cabang</label>
                                 <div class="col-sm-8">
                                     <select name="inputKepalaCabang" class="form-control select2bs4" id="inputKepalaCabang">
-                                        <option disabled selected>Pilih Kepala Cabang</option>
-                                        @foreach ($data as $m)
+                                        @if (Auth::user()->level == 99)
+                                            @foreach ($data as $m)
+                                                <option value="{{ $m->id }}">{{ $m->name }}</option>
+                                            @endforeach
+                                        @else
+                                            <option value="{{ Auth::user()->id }}">{{ Auth::user()->name }}</option>
+                                        @endif
 
-                                            <option value="{{ $m->id }}">{{ $m->name }}</option>
-
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -314,6 +306,7 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('dist/js/rupiah.js') }}"></script>
     <script>
         var api_url = "{{ url('api/cabang') . '/' . Request::segment(2) }}";
         var base_url = "{{ url('') }}";
@@ -369,6 +362,30 @@
                     },
                     {
                         "data": "no_pembayaran"
+                    },
+                    {
+                        "data": "status_nilai"
+                    },
+                    {
+                        "data": "jumlah_pembayaran",
+                        render: function(data, type, row) {
+                            return convertToRupiah(data);
+                        }
+                    },
+                    {
+                        "data": "id_penebak",
+                        render: function(data, type, row) {
+                            if (row.status_pembayaran == 'Belum') {
+                                return '<div class="text-center"> <button onclick="statusPembayaran(' +
+                                    row.id_history +
+                                    ')" class="btn btn-danger justify-content-center">Belum</button> </div> '
+                            } else {
+                                return '<div class="text-center"> <button onclick="statusPembayaran(' +
+                                    row.id_history +
+                                    ')" class="btn btn-success justify-content-center">Selesai</button> </div> '
+                            }
+
+                        }
                     },
 
                     {
@@ -480,6 +497,21 @@
             $("#ss_dompet").attr("src", image_url + image);
             $("#ss_dompet_parent").attr("href", image_url + image)
 
+        }
+
+        function statusPembayaran(id_history) {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    data: id_history
+                },
+                dataType: 'JSON',
+                url: "{{ url('api/edit_status_bayar') }}",
+                success: function(data) {
+                    var table = $('#tablePenebak').DataTable();
+                    table.ajax.reload(null, false);
+                }
+            });
         }
     </script>
 

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class HistoryValidasi extends Model
 {
     protected $table = "validasi_history";
+    protected $primaryKey = 'id_history';
+
     use HasFactory;
 
     public function penebak()

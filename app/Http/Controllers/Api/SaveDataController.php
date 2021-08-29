@@ -241,4 +241,17 @@ class SaveDataController extends Controller
         }
         return response()->json(['success' => "Data berhasil disimpan"]);
     }
+
+    public function editStatusPembayaran(Request $request)
+    {
+        $data = $request->all();
+        $validasi = HistoryValidasi::find($data['data']);
+        if ($validasi->status_pembayaran == "Belum") {
+            $validasi->status_pembayaran = "Selesai";
+        } else {
+            $validasi->status_pembayaran = "Belum";
+        }
+        $validasi->save();
+        return response()->json(['success' => "Berhasil di update"]);
+    }
 }

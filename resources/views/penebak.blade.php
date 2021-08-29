@@ -145,17 +145,16 @@
                                         <div class="row justify-content-center">
                                             <div class="col-auto">
                                                 <table id="tableHistory"
-                                                    class="display compact nowrap table table-sm table-responsive table-hover table-bordered table-striped">
+                                                    class="display compact table-responsive nowrap table table-sm table-responsive table-hover table-bordered table-striped">
                                                     <thead>
                                                         <tr>
-                                                            <th>No.</th>
                                                             <th>Epoch</th>
                                                             <th>Tgl Validasi</th>
                                                             <th>Age</th>
-                                                            <th>PrevState</th>
-                                                            <th>State</th>
+                                                            <th>Status Nilai</th>
                                                             <th>Nilai</th>
-                                                            <th>Aksi</th>
+                                                            <th>Pembayaran</th>
+                                                            <th>Status Pembayaran</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="tableHistory-body">
@@ -292,101 +291,6 @@
                     </div>
                 </div>
 
-                <!-- Modal Edit history validasi-->
-                <div class="modal fade" id="modalEditHistory" role="dialog" aria-labelledby="modalEditHistoryTitle"
-                    tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalEditHistoryTitle">Tambah History</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <form id="formEditHistory" method="POST">
-                                <div class="modal-body">
-
-                                    <a href="#" class="btn btn-info d-flex justify-content-center mb-4"
-                                        onclick="load_state()">Ambil
-                                        Data</a>
-                                    <input type="hidden" class="idEditHistory" id="idEditHistory" name="idEditHistory">
-                                    <div class="form-group row">
-                                        <label for="inputEditEpoch" class="col-sm-4 col-form-label">Epoch</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" name="inputEditEpoch" class="form-control"
-                                                id="inputEditEpoch" placeholder="Input Epoch">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="inputEditAge" class="col-sm-4 col-form-label">Age</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" name="inputEditAge" class="form-control" id="inputEditAge"
-                                                placeholder="Input Age">
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group row">
-                                        <label for="inputEditPrevState" class="col-sm-4 col-form-label">PrevState</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" name="inputEditPrevState" class="form-control"
-                                                id="inputEditPrevState" placeholder="Input PrevState">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEditState" class="col-sm-4 col-form-label">State</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" name="inputEditState" class="form-control"
-                                                id="inputEditState" placeholder="Input State">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEditNilai" class="col-sm-4 col-form-label">Nilai (%)</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" name="inputEditNilai" class="form-control"
-                                                id="inputEditNilai" placeholder="Input Nilai">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                    <button type="submit" form="formEditHistory" class="btn btn-success">Simpan</button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Modal hapus history --}}
-                <div class="modal fade" id="warningDeleteHistory" role="dialog" aria-labelledby="warningDeleteHistoryTitle"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="warningDeleteHistoryTitle">Hapus Dompet</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <form id="formDeleteHistory" method="POST">
-                                <div class="modal-body">
-                                    <input type="hidden" class="idHistoryDelete" id="idHistoryDelete"
-                                        name="idHistoryDelete">
-                                    <h3>Yakin ingin menghapus history ini?</h3>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                    <button type="submit" form="formDeleteHistory" class="btn btn-success">Simpan</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
 
             </div>
             <!-- /.content-wrapper -->
@@ -416,6 +320,7 @@
             <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
             <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
             <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+            <script src="{{ asset('dist/js/rupiah.js') }}"></script>
 
             <!-- Ekko Lightbox -->
             <script src="{{ asset('plugins/ekko-lightbox/ekko-lightbox.min.js') }}"></script>
@@ -493,6 +398,7 @@
                             data: hasil,
                             url: "{{ url('api/sync') . '/' . Request::segment(2) }}",
                             beforeSend: function() {
+
                                 $("#loaderSync").show();
                                 setTimeout(function() {
                                     $("#textLoader").text("Still collecting data...")
@@ -502,9 +408,11 @@
                                 }, 20000);
                             },
                             success: function(data) {
-                                alert(data['success']);
-                                location.reload();
 
+                                alert(data['success']);
+                                $("#loaderSync").hide();
+                                var table = $('#tableHistory').DataTable();
+                                table.ajax.reload(null, false);
                             }
                         });
 
@@ -531,53 +439,55 @@
                 }
 
                 function load_data(url) {
-                    // $("#tableHistory").DataTable({
-                    //     dom: 'Bfrtip',
-                    //     processing: true,
-                    //     serverSide: true,
-                    //     "ajax": api_history,
-                    //     "columns": [{
-                    //             "data": "id_history",
-                    //             render: function(data, type, row, meta) {
-                    //                 return meta.row + meta.settings._iDisplayStart + 1;
-                    //             }
-                    //         },
-                    //         {
-                    //             "data": "epoch"
-                    //         },
-                    //         {
-                    //             "data": "tanggal_validasi"
-                    //         },
-                    //         {
-                    //             "data": "age"
-                    //         },
-                    //         {
-                    //             "data": "prevstate"
-                    //         },
-                    //         {
-                    //             "data": "state"
-                    //         },
-                    //         {
-                    //             title: "Nilai (%)",
-                    //             "data": "nilai"
-                    //         },
-                    //         {
-                    //             "data": "id_history",
-                    //             render: function(data, type, row) {
-                    //                 return '<div class="text-center"><a href = "#" class = "btn btn-info" onclick="editHistory(' +
-                    //                     data + ',' + row.epoch + ',\'' + row.tanggal_validasi + '\',' + row.id_validasi + ',' + row.age + ',\'' +
-                    //                     row.prevstate + '\',\'' + row.state + '\',\'' + row.nilai +
-                    //                     '\')" > Edit </a>&nbsp<a href = "#" class = "btn btn-danger" onclick="deleteHistory(' +
-                    //                     data + ')" > Hapus </a></div> '
-                    //             }
-                    //         }
-                    //     ],
+                    $("#tableHistory").DataTable({
+                        dom: 'Bfrtip',
+                        processing: true,
+                        serverSide: true,
+                        "ajax": api_history,
+                        "columns": [{
+                                "data": "epoch"
+                            },
+                            {
+                                "data": "tgl_validasi"
+                            },
+                            {
+                                "data": "age"
+                            },
+                            {
+                                "data": "status_nilai"
+                            },
+                            {
+                                title: "Nilai (%)",
+                                "data": "nilai"
+                            },
+                            {
+                                "data": "jumlah_pembayaran",
+                                render: function(data, type, row) {
+                                    return convertToRupiah(data);
+                                }
+                            },
+                            {
+                                "data": "id_history",
+                                render: function(data, type, row) {
+                                    if (row.status_pembayaran == 'Belum') {
+                                        return '<div class="text-center"> <button onclick="statusPembayaran(' +
+                                            data +
+                                            ')" class="btn btn-danger justify-content-center">Belum</button> </div> '
+                                    } else {
+                                        return '<div class="text-center"> <button onclick="statusPembayaran(' +
+                                            data +
+                                            ')" class="btn btn-success justify-content-center">Selesai</button> </div> '
+                                    }
 
-                    //     "responsive": true,
-                    //     "lengthChange": true,
-                    //     "autoWidth": true,
-                    //     "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
-                    // }).buttons().container().appendTo('#tableHistory_wrapper .col-md-6:eq(0)');
+                                }
+                            }
+                        ],
+
+                        "responsive": false,
+                        "lengthChange": false,
+                        "autoWidth": false,
+                        "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
+                    }).buttons().container().appendTo('#tableHistory_wrapper .col-md-6:eq(0)');
 
                     $.get(url, function(data, status) {
                         idna_address = data.alamat_idena;
@@ -642,69 +552,19 @@
                     });
                 });
 
-                $("#formTambahHistory").submit(function(e) {
-                    e.preventDefault();
-                    var dataKirim = $(this).serialize();
+                function statusPembayaran(id_history) {
                     $.ajax({
                         type: 'POST',
-                        data: dataKirim,
-                        url: "{{ url('api/save_history') }}",
+                        data: {
+                            data: id_history
+                        },
+                        dataType: 'JSON',
+                        url: "{{ url('api/edit_status_bayar') }}",
                         success: function(data) {
-                            alert(data['success']);
-                            location.reload();
+                            var table = $('#tableHistory').DataTable();
+                            table.ajax.reload(null, false);
                         }
                     });
-                });
-
-                $("#formEditHistory").submit(function(e) {
-                    e.preventDefault();
-                    var data = $(this).serialize();
-                    $.ajax({
-                        type: 'POST',
-                        data: data,
-                        url: "{{ url('api/edit_history') }}",
-                        success: function(data) {
-
-                            alert(data['success']);
-                            location.reload();
-
-                        }
-                    });
-                });
-
-                $("#formDeleteHistory").submit(function(e) {
-                    e.preventDefault();
-                    var data = $(this).serialize();
-                    $.ajax({
-                        type: 'POST',
-                        data: data,
-                        url: "{{ url('api/delete_history') }}",
-                        success: function(data) {
-
-                            alert(data['success']);
-                            location.reload();
-
-                        }
-                    });
-                });
-
-                function editHistory(id, epoch, tgl_validasi, id_validasi, age, prevstate, state, nilai) {
-                    $('#modalEditHistory').modal('show')
-                    $("#idEditHistory").val(id);
-                    $("#inputEditEpoch").val(epoch);
-                    $("#inputEditAge").val(age);
-                    $("#inputEditTglValidasi").val(id_validasi).select2().trigger('change');
-
-                    $("#inputEditPrevState").val(prevstate);
-                    $("#inputEditState").val(state);
-                    $("#inputEditNilai").val(nilai);
-
-                }
-
-                function deleteHistory(id) {
-                    $('#warningDeleteHistory').modal('show')
-                    $("#idHistoryDelete").val(id);
-
                 }
             </script>
 

@@ -12,10 +12,9 @@ class historyValidasiController extends Controller
     public function getHistory($id)
     {
         $history = Datatables::of(
-            HistoryValidasi::select('validasi_history.*', 'validasi_history.id as id_history', 'validasi.tanggal_validasi')
-                ->leftJoin('penebak', 'validasi_history.id_penebak', 'penebak.id')
-                ->leftJoin('validasi', 'validasi_history.id_validasi', 'validasi.id')
-                ->where('id_penebak', $id)
+            HistoryValidasi::select('*')
+                ->leftJoin('penebak', 'validasi_history.id_penebak', 'penebak.id_penebak')
+                ->where('validasi_history.id_penebak', $id)
                 ->orderBy('epoch', 'desc')
                 ->get()
         )->toJson();
