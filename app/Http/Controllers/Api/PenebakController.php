@@ -10,10 +10,10 @@ class PenebakController extends Controller
 {
     public function getPenebak($id)
     {
-        $penebak = Penebak::select('penebak.*', 'penebak.kepala_cabang as id_kepalaCabang', 'dompet_digital.nama_dompet', 'users.name as kepala_cabang')
-            ->leftJoin('dompet_digital', 'penebak.tipe_pembayaran', 'dompet_digital.id')
-            ->leftJoin('users', 'penebak.kepala_cabang', 'users.id')
-            ->where('penebak.id', $id)
+        $penebak = Penebak::select('*')
+            ->leftJoin('dompet_digital', 'penebak.id_dompet', 'dompet_digital.id_dompet')
+            ->leftJoin('users', 'penebak.id_kepala_cabang', 'users.id')
+            ->where('id_penebak', $id)
             ->first();
         return response()->json($penebak, 200);
     }

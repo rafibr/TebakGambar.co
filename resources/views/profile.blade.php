@@ -91,8 +91,8 @@
                                                     <th>Address</th>
                                                     <th>Dompet Pembayaran</th>
                                                     <th>No. Pembayaran</th>
-                                                    <th>State</th>
-                                                    <th>Pembayaran</th>
+                                                    {{-- <th>State</th>
+                                                    <th>Pembayaran</th> --}}
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
@@ -104,8 +104,8 @@
                                                     <th>Address</th>
                                                     <th>Dompet Pembayaran</th>
                                                     <th>No. Pembayaran</th>
-                                                    <th>State</th>
-                                                    <th>Pembayaran</th>
+                                                    {{-- <th>State</th>
+                                                    <th>Pembayaran</th> --}}
                                                     <th>Aksi</th>
                                                 </tr>
                                             </tfoot>
@@ -173,7 +173,7 @@
                                         <option disabled selected>Pilih Pembayaran</option>
                                         @foreach ($dataDompet as $m)
 
-                                            <option value="{{ $m->id }}">{{ $m->nama_dompet }}</option>
+                                            <option value="{{ $m->id_dompet }}">{{ $m->nama_dompet }}</option>
 
                                         @endforeach
                                     </select>
@@ -342,11 +342,6 @@
 
 
         function load_data(url) {
-            // // Setup - add a text input to each footer cell
-            // $('#tablePenebak tfoot th').each(function() {
-            //     var title = $(this).text();
-            //     $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-            // });
 
             $("#tablePenebak").DataTable({
                 dom: 'Bfrtip',
@@ -354,7 +349,7 @@
                 serverSide: true,
                 "ajax": api_url,
                 "columns": [{
-                        "data": "name"
+                        "data": "name_penebak"
                     },
                     {
                         "data": "alamat_idena",
@@ -365,88 +360,25 @@
                         }
                     },
                     {
-                        "data": "dompet_digital.nama_dompet",
+                        "data": "image_dompet",
                         render: function(data, type, row) {
                             return '<div class="text-center"><a class = "btn btn-warning" onclick="getQr(\'' +
-                                row.image_dompet +
+                                data +
                                 '\')" > Show Qr </a></div>';
                         }
                     },
                     {
-                        "data": "no_hp_pembayaran"
+                        "data": "no_pembayaran"
                     },
+
                     {
-                        "title": "Status",
-                        render: function(data, type, row) {
-                            var state = row.state;
-                            var nilai = row.nilai;
-                            status = "";
-
-                            if (state == "Newbie") {
-                                status = "Newbie";
-                            } else if (state == "Verified") {
-                                if (row.prevstate == "Newbie") {
-                                    status = "Newbie => Verified";
-                                } else {
-                                    if (nilai < 100) {
-                                        status = "Verified < 100%";
-                                    } else {
-                                        status = "Verified 100%";
-                                    }
-                                }
-                            } else if (state == "Human") {
-                                if (nilai < 100) {
-                                    status = "Human < 100%";
-                                } else {
-                                    status = "Human 100%";
-                                }
-                            } else {
-                                status = "Gagal";
-                            }
-
-                            return status;
-                        }
-                    },
-                    {
-                        render: function(data, type, row) {
-                            var state = row.state;
-                            var nilai = row.nilai;
-                            pembayaran = "";
-
-                            if (state == "Newbie") {
-                                pembayaran = "Rp 20.000";
-                            } else if (state == "Verified") {
-                                if (row.prevstate == "Newbie") {
-                                    pembayaran = "Rp 75.000";
-                                } else {
-                                    if (nilai < 100) {
-                                        pembayaran = "Rp 35.000";
-                                    } else {
-                                        pembayaran = "Rp 40.000";
-                                    }
-                                }
-                            } else if (state == "Human") {
-                                if (nilai < 100) {
-                                    pembayaran = "Rp 40.000";
-                                } else {
-                                    pembayaran = "Rp 50.000";
-                                }
-                            } else {
-                                pembayaran = "Rp 10.000";
-                            }
-
-                            return pembayaran;
-                        }
-                    },
-                    {
-                        "data": "penebak.id",
+                        "data": "id_penebak",
                         render: function(data, type, row) {
                             return '<div class="text-center"><a href = "' + base_url +
-                                '/penebak/' + row.penebak_id +
-                                '" class = "btn btn-primary" onclick="getPenebak(' + row
-                                .penebak_id +
+                                '/penebak/' + data +
+                                '" class = "btn btn-primary" onclick="getPenebak(' + data +
                                 ')" > Detail </a>&nbsp<a href = "#" class = "btn btn-danger" onclick="deletePenebak(' +
-                                row.penebak_id +
+                                data +
                                 ')" > Hapus </a></div> '
                         }
                     }
@@ -494,6 +426,7 @@
         $("#formTambahPenebak").submit(function(e) {
             e.preventDefault();
             var data = $(this).serialize();
+
             $.ajax({
                 type: 'POST',
                 data: data,

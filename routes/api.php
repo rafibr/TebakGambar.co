@@ -55,5 +55,6 @@ Route::post('add_validasi/', [SaveDataController::class, 'addValidasi']);
 Route::post('edit_validasi/', [SaveDataController::class, 'editValidasi']);
 Route::post('delete_validasi/', [SaveDataController::class, 'deleteValidasi']);
 
-
 Route::get('history/{id}', [historyValidasiController::class, 'getHistory']);
+
+Route::post('sync/{id}', [SaveDataController::class, 'syncData']);

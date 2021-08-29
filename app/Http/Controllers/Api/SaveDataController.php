@@ -8,7 +8,10 @@ use App\Models\HistoryValidasi;
 use App\Models\Penebak;
 use App\Models\User;
 use App\Models\Validasi;
+use Facade\FlareClient\Http\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class SaveDataController extends Controller
@@ -33,11 +36,11 @@ class SaveDataController extends Controller
     {
         $data = $request->all();
         $penebak = Penebak::find($data['idPenebak']);
-        $penebak->name = $data['inputNama'];
+        $penebak->name_penebak = $data['inputNama'];
         $penebak->alamat_idena = $data['inputAddress'];
-        $penebak->tipe_pembayaran = $data['inputJenisPembayaran'];
-        $penebak->no_hp_pembayaran = $data['inputNoPembayaran'];
-        $penebak->kepala_cabang = $data['inputKepalaCabang'];
+        $penebak->id_dompet = $data['inputJenisPembayaran'];
+        $penebak->no_pembayaran = $data['inputNoPembayaran'];
+        $penebak->id_kepala_cabang = $data['inputKepalaCabang'];
         $penebak->save();
         return response()->json(['success' => "Data berhasil diupdate"]);
     }
@@ -46,11 +49,11 @@ class SaveDataController extends Controller
     {
         $data = $request->all();
         $penebak = new Penebak;
-        $penebak->name = $data['inputNama'];
+        $penebak->name_penebak = $data['inputNama'];
         $penebak->alamat_idena = $data['inputAddress'];
-        $penebak->tipe_pembayaran = $data['inputJenisPembayaran'];
-        $penebak->no_hp_pembayaran = $data['inputNoPembayaran'];
-        $penebak->kepala_cabang = $data['inputKepalaCabang'];
+        $penebak->id_dompet = $data['inputJenisPembayaran'];
+        $penebak->no_pembayaran = $data['inputNoPembayaran'];
+        $penebak->id_kepala_cabang = $data['inputKepalaCabang'];
         $penebak->save();
         return response()->json(['success' => "Data berhasil diupdate"]);
     }
@@ -157,5 +160,85 @@ class SaveDataController extends Controller
         $validasi->tanggal_validasi = $data['inputeditTanggalValidasi'];
         $validasi->save();
         return response()->json(['success' => "Data berhasil di update"]);
+    }
+    // ------------------------------------------------------
+
+    public function syncData(Request $request)
+    {
+        $data = $request->all();
+        $dataId = request()->segment(3);
+        $arrEpoch = [];
+        $lastEpoch = DB::table('validasi_history')
+            ->select("epoch")
+            ->where('id_penebak', $dataId)
+            ->get();
+
+        foreach ($lastEpoch as $epochTemp) {
+            array_push($arrEpoch, $epochTemp->epoch);
+        };
+
+        foreach ($data['result'] as $dataLoop) {
+            if (in_array($dataLoop['epoch'], $arrEpoch)) {
+                continue;
+            } else {
+                $url = "https://api.idena.io/api/Epoch/" . $dataLoop['epoch'];
+                $tgl_validasi = Http::get($url)['result']['validationTime'];
+
+                $historyValidasi = new HistoryValidasi;
+                $historyValidasi->id_penebak = $dataId;
+                $historyValidasi->epoch = $dataLoop['epoch'];
+                $historyValidasi->tgl_validasi = date('Y-m-d h:i:s', strtotime($tgl_validasi));
+                $historyValidasi->age =  ($dataLoop['epoch'] - $dataLoop['birthEpoch']) + 1;
+                $historyValidasi->prevstate = $dataLoop['prevState'];
+                $historyValidasi->state = $dataLoop['state'];
+                $point = $dataLoop['totalShortAnswers']['point'];
+                $flipsCount = $dataLoop['totalShortAnswers']['flipsCount'];
+
+                $score = round((($point / $flipsCount) * 100), 2);
+                $historyValidasi->nilai = $score;
+
+
+                $state = $dataLoop['state'];
+                $prevState = $dataLoop['prevState'];
+                $statusNilai = "";
+                $jumlahPembayaran = 0;
+
+                if ($state == "Newbie") {
+                    $statusNilai = "Newbie";
+                    $jumlahPembayaran = 20000;;
+                } else if ($state == "Verified") {
+                    if ($prevState == "Newbie") {
+                        $statusNilai = "Newbie => Verified";
+                        $jumlahPembayaran = 75000;
+                    } else {
+                        if ($score < 100) {
+                            $statusNilai = "Verified < 100%";
+                            $jumlahPembayaran = 35000;
+                        } else {
+                            $statusNilai = "Verified 100%";
+                            $jumlahPembayaran = 40000;
+                        }
+                    }
+                } else if ($state == "Human") {
+                    if ($score < 100) {
+                        $statusNilai = "Human < 100%";
+                        $jumlahPembayaran = 40000;
+                    } else {
+                        $statusNilai = "Human 100%";
+                        $jumlahPembayaran = 50000;
+                    }
+                } else {
+                    $statusNilai = "Gagal";
+                    $jumlahPembayaran = 10000;
+                }
+
+                $historyValidasi->status_nilai = $statusNilai;
+                $historyValidasi->jumlah_pembayaran = $jumlahPembayaran;
+
+
+                $historyValidasi->save();
+            }
+        }
+        return response()->json(['success' => "Data berhasil disimpan"]);
     }
 }

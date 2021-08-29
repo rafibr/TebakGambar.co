@@ -138,9 +138,8 @@
                                         <div class="row mb-2 text-right ">
                                             <div class="col">
 
-                                                <a id="btnModalTambah" class="btn btn-info justify-content-center"
-                                                    data-toggle="modal" data-target="#modalTambah">Tambah
-                                                    History</a>
+                                                <a id="btnModalTambah" class="btn btn-info justify-content-center">Sync
+                                                    Data</a>
                                             </div>
                                         </div>
                                         <div class="row justify-content-center">
@@ -163,6 +162,18 @@
 
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="loaderSync" class="overlay hide">
+                                        <div class="d-flex flex-column align-items-center justify-content-center">
+                                            <div class="row">
+                                                <div class="spinner-border text-dark" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div class="row text-dark">
+                                                <strong id="textLoader">Collecting data</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -227,7 +238,7 @@
                                                 <option disabled selected>Pilih Pembayaran</option>
                                                 @foreach ($dataDompet as $m)
 
-                                                    <option value="{{ $m->id }}">{{ $m->nama_dompet }}</option>
+                                                    <option value="{{ $m->id_dompet }}">{{ $m->nama_dompet }}</option>
 
                                                 @endforeach
                                             </select>
@@ -281,92 +292,6 @@
                     </div>
                 </div>
 
-                <!-- Modal tambah history validasi-->
-                <div class="modal fade" id="modalTambah" role="dialog" aria-labelledby="modalTambahTitle" tabindex="-1"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalTambahTitle">Tambah History</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <form id="formTambahHistory" method="POST">
-                                <div class="modal-body">
-
-                                    <a href="#" class="btn btn-info d-flex justify-content-center mb-4"
-                                        onclick="load_state()">Ambil
-                                        Data</a>
-                                    <input type="hidden" class="idPenebak" id="idPenebak" name="idPenebak">
-                                    <div class="form-group row">
-                                        <label for="inputEpoch" class="col-sm-4 col-form-label">Epoch</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" name="inputEpoch" class="form-control" id="inputEpoch"
-                                                placeholder="Input Epoch">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="inputAge" class="col-sm-4 col-form-label">Age</label>
-                                        <div class="col-sm-8">
-                                            <input type="number" name="inputAge" class="form-control" id="inputAge"
-                                                placeholder="Input Age">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="inputTglValidasi" class="col-sm-4 col-form-label">Tanggal
-                                            Validasi</label>
-                                        <div class="col-sm-8">
-                                            <select name="inputTglValidasi" class="form-control select2bs4"
-                                                id="inputTglValidasi">
-                                                <option disabled selected>Pilih Tanggal Validasi (Pada menu "Validasi")
-                                                </option>
-                                                @foreach ($dataValidasi as $m)
-
-                                                    <option value="{{ $m->id }}">{{ $m->tanggal_validasi }}
-                                                    </option>
-
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="inputPrevState" class="col-sm-4 col-form-label">PrevState</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" name="inputPrevState" class="form-control"
-                                                id="inputPrevState" placeholder="Input PrevState">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputState" class="col-sm-4 col-form-label">State</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" name="inputState" class="form-control" id="inputState"
-                                                placeholder="Input State">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputNilai" class="col-sm-4 col-form-label">Nilai (%)</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" name="inputNilai" class="form-control" id="inputNilai"
-                                                placeholder="Input Nilai">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                    <button type="submit" form="formTambahHistory" class="btn btn-success">Simpan</button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Modal Edit history validasi-->
                 <div class="modal fade" id="modalEditHistory" role="dialog" aria-labelledby="modalEditHistoryTitle"
                     tabindex="-1" aria-hidden="true">
@@ -402,23 +327,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label for="inputEditTglValidasi" class="col-sm-4 col-form-label">Tanggal
-                                            Validasi</label>
-                                        <div class="col-sm-8">
-                                            <select name="inputEditTglValidasi" class="form-control select2bs4"
-                                                id="inputEditTglValidasi">
-                                                <option disabled selected>Pilih Tanggal Validasi (Pada menu "Validasi")
-                                                </option>
-                                                @foreach ($dataValidasi as $m)
-
-                                                    <option value="{{ $m->id }}">{{ $m->tanggal_validasi }}
-                                                    </option>
-
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
 
                                     <div class="form-group row">
                                         <label for="inputEditPrevState" class="col-sm-4 col-form-label">PrevState</label>
@@ -467,7 +375,8 @@
 
                             <form id="formDeleteHistory" method="POST">
                                 <div class="modal-body">
-                                    <input type="hidden" class="idHistoryDelete" id="idHistoryDelete" name="idHistoryDelete">
+                                    <input type="hidden" class="idHistoryDelete" id="idHistoryDelete"
+                                        name="idHistoryDelete">
                                     <h3>Yakin ingin menghapus history ini?</h3>
                                 </div>
                                 <div class="modal-footer">
@@ -520,6 +429,7 @@
                 var base_url = "{{ url('') }}";
                 var image_url = "{{ url('storage/SSDompet') . '/' }}";
                 var idena_identity_url = "https://scan.idena.org/identity/";
+                var get_id_penebak = "{{ Request::segment(2) }}";
 
 
                 // https://api.idena.io/api/Identity/0xdb322d16abe145d4e2d15d907f49a80d2fe2dc93/Age (get age)
@@ -559,27 +469,11 @@
                 })
 
                 $(document).ready(function() {
+                    $("#loaderSync").hide();
                     load_data(api_url);
                 });
 
                 $("#btnModalTambah").click(function() {
-                    idna_address = $("#idna_address").text();
-                    age_url = "https://api.idena.io/api/Identity/" + idna_address + "/Age";
-                    epoch_url = "https://api.idena.io/api/Epoch/Last";
-
-                    $.get(epoch_url, function(data) {
-                        // console.log(data);
-                        epoch = (data.result.epoch) - 1;
-                        $("#inputEpoch").val(epoch);
-                    });
-
-                    $.get(age_url, function(data) {
-                        $("#inputAge").val(data.result);
-                    });
-
-                });
-
-                $("#inputEpoch").on('change paste input', function() {
                     load_state();
                 });
 
@@ -591,20 +485,33 @@
                     epochChoose = $("#inputEpoch").val();
                     state_url = "https://api.idena.io/api/Epoch/" + epochChoose +
                         "/Identity/" + idna_address;
+                    sync_data = "https://api.idena.io/api/Identity/" + idna_address + "/Epochs?limit=100";
+                    $.get(sync_data, function(hasil) {
 
-                    $.get(state_url, function(data) {
-                        $("#inputPrevState").val(data.result.prevState);
-                        $("#inputState").val(data.result.state);
+                        $.ajax({
+                            type: 'POST',
+                            data: hasil,
+                            url: "{{ url('api/sync') . '/' . Request::segment(2) }}",
+                            beforeSend: function() {
+                                $("#loaderSync").show();
+                                setTimeout(function() {
+                                    $("#textLoader").text("Still collecting data...")
+                                }, 10000);
+                                setTimeout(function() {
+                                    $("#textLoader").text("Taking longer than anticipated...")
+                                }, 20000);
+                            },
+                            success: function(data) {
+                                alert(data['success']);
+                                location.reload();
 
-                        flipsCount = data.result.totalShortAnswers.flipsCount;
-                        point = data.result.totalShortAnswers.point;
+                            }
+                        });
 
-                        nilai = ((point / flipsCount) * 100).toFixed(3);
-                        console.log(nilai);
-
-                        $("#inputNilai").val(nilai);
                     });
+
                 }
+
                 function load_edit_state() {
                     epochChoose = $("#inputEditEpoch").val();
                     state_url = "https://api.idena.io/api/Epoch/" + epochChoose +
@@ -624,71 +531,71 @@
                 }
 
                 function load_data(url) {
-                    $("#tableHistory").DataTable({
-                        dom: 'Bfrtip',
-                        processing: true,
-                        serverSide: true,
-                        "ajax": api_history,
-                        "columns": [{
-                                "data": "id_history",
-                                render: function(data, type, row, meta) {
-                                    return meta.row + meta.settings._iDisplayStart + 1;
-                                }
-                            },
-                            {
-                                "data": "epoch"
-                            },
-                            {
-                                "data": "tanggal_validasi"
-                            },
-                            {
-                                "data": "age"
-                            },
-                            {
-                                "data": "prevstate"
-                            },
-                            {
-                                "data": "state"
-                            },
-                            {
-                                title: "Nilai (%)",
-                                "data": "nilai"
-                            },
-                            {
-                                "data": "id_history",
-                                render: function(data, type, row) {
-                                    return '<div class="text-center"><a href = "#" class = "btn btn-info" onclick="editHistory(' +
-                                        data + ',' + row.epoch + ',\'' + row.tanggal_validasi + '\',' + row.id_validasi + ',' + row.age + ',\'' +
-                                        row.prevstate + '\',\'' + row.state + '\',\'' + row.nilai +
-                                        '\')" > Edit </a>&nbsp<a href = "#" class = "btn btn-danger" onclick="deleteHistory(' +
-                                        data + ')" > Hapus </a></div> '
-                                }
-                            }
-                        ],
+                    // $("#tableHistory").DataTable({
+                    //     dom: 'Bfrtip',
+                    //     processing: true,
+                    //     serverSide: true,
+                    //     "ajax": api_history,
+                    //     "columns": [{
+                    //             "data": "id_history",
+                    //             render: function(data, type, row, meta) {
+                    //                 return meta.row + meta.settings._iDisplayStart + 1;
+                    //             }
+                    //         },
+                    //         {
+                    //             "data": "epoch"
+                    //         },
+                    //         {
+                    //             "data": "tanggal_validasi"
+                    //         },
+                    //         {
+                    //             "data": "age"
+                    //         },
+                    //         {
+                    //             "data": "prevstate"
+                    //         },
+                    //         {
+                    //             "data": "state"
+                    //         },
+                    //         {
+                    //             title: "Nilai (%)",
+                    //             "data": "nilai"
+                    //         },
+                    //         {
+                    //             "data": "id_history",
+                    //             render: function(data, type, row) {
+                    //                 return '<div class="text-center"><a href = "#" class = "btn btn-info" onclick="editHistory(' +
+                    //                     data + ',' + row.epoch + ',\'' + row.tanggal_validasi + '\',' + row.id_validasi + ',' + row.age + ',\'' +
+                    //                     row.prevstate + '\',\'' + row.state + '\',\'' + row.nilai +
+                    //                     '\')" > Edit </a>&nbsp<a href = "#" class = "btn btn-danger" onclick="deleteHistory(' +
+                    //                     data + ')" > Hapus </a></div> '
+                    //             }
+                    //         }
+                    //     ],
 
-                        "responsive": true,
-                        "lengthChange": true,
-                        "autoWidth": true,
-                        "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
-                    }).buttons().container().appendTo('#tableHistory_wrapper .col-md-6:eq(0)');
+                    //     "responsive": true,
+                    //     "lengthChange": true,
+                    //     "autoWidth": true,
+                    //     "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
+                    // }).buttons().container().appendTo('#tableHistory_wrapper .col-md-6:eq(0)');
 
                     $.get(url, function(data, status) {
                         idna_address = data.alamat_idena;
-                        $("#nama_penebak").text(data.name);
-                        $("#nama_kepalaCabang").text(data.kepala_cabang);
+                        $("#nama_penebak").text(data.name_penebak);
+                        $("#nama_kepalaCabang").text(data.name);
                         $("#idna_address").text(data.alamat_idena);
                         $("#nama_dompet").text(data.nama_dompet);
-                        $("#no_pembayaran").text(data.no_hp_pembayaran);
+                        $("#no_pembayaran").text(data.no_pembayaran);
 
                         $("#ss_dompet").attr("src", image_url + data.image_dompet);
                         $("#ss_dompet_parent").attr("href", image_url + data.image_dompet)
 
-                        $(".idPenebak").val(data.id)
-                        $("#inputNama").val(data.name)
+                        $(".idPenebak").val(data.id_penebak)
+                        $("#inputNama").val(data.name_penebak)
                         $("#inputAddress").val(data.alamat_idena)
-                        $("#inputNoPembayaran").val(data.no_hp_pembayaran)
-                        $("#inputKepalaCabang").val(data.id_kepalaCabang).change();
-                        $("#inputJenisPembayaran").val(data.tipe_pembayaran).change();
+                        $("#inputNoPembayaran").val(data.no_pembayaran)
+                        $("#inputKepalaCabang").val(data.id).change();
+                        $("#inputJenisPembayaran").val(data.id_dompet).change();
 
                     });
                 }
@@ -717,7 +624,7 @@
                     var fd = new FormData(this);
                     fd.append('file', files[0]);
                     fd.append('id_penebak', id_penebak);
-                    // console.log(new FormData(this));
+
                     $.ajax({
                         type: 'POST',
                         data: fd,
@@ -727,8 +634,9 @@
                         processData: false,
                         url: "{{ url('api/save_ssdompet') }}",
                         success: function(data) {
-                            load_data(api_url);
                             alert(data['success']);
+
+                            load_data(api_url);
                             $("#modalEditSS").modal('hide');
                         }
                     });

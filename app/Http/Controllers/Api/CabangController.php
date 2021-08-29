@@ -11,7 +11,7 @@ class CabangController extends Controller
 {
     public function getCountPenebak($id)
     {
-        $penebak = Penebak::where('kepala_cabang', $id)
+        $penebak = Penebak::where('id_kepala_cabang', $id)
             ->count();
         return response()->json($penebak, 200);
     }

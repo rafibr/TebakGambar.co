@@ -39,8 +39,7 @@ class DashboardController extends Controller
     {
         $data = User::where("level", '!=', 99)->get();
         $dataDompet = DompetDigital::all();
-        $dataValidasi = Validasi::all();
-        return view('penebak', ['data' => $data, 'dataDompet' => $dataDompet, 'dataValidasi' => $dataValidasi]);
+        return view('penebak', ['data' => $data, 'dataDompet' => $dataDompet]);
     }
 
     public function dompetView()
