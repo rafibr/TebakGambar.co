@@ -84,7 +84,9 @@
                                 </div>
                                 <div class="row">
                                     <div class="col d-flex justify-content-center">
-                                        <table id="tablePenebak" width="100%"
+                                        <div id="demo"></div>
+
+                                        <table id="tablePenebak"
                                             class="table table-responsive table-hover table-bordered table-striped">
                                             <thead>
                                                 <tr>
@@ -92,6 +94,7 @@
                                                     <th>Address</th>
                                                     <th>Dompet Pembayaran</th>
                                                     <th>No. Pembayaran</th>
+                                                    <th>Balance</th>
                                                     <th>Status Nilai</th>
                                                     <th>Pembayaran</th>
                                                     <th>Status Pembayaran</th>
@@ -327,9 +330,11 @@
         var base_url = "{{ url('') }}";
         var jumlah_url = "{{ url('api/penebakcount') . '/' . Request::segment(2) }}";
         var cabang_url = "{{ url('api/cabang_profile') . '/' . Request::segment(2) }}";
+        var get_balance = "https://api.idena.io/api/Address/";
 
         var idena_identity_url = "{{ 'https://scan.idena.org/identity/' }}";
         var image_url = "{{ url('storage/SSDompet') . '/' }}";
+        var totalJumBayar = 0;
 
         $(function() {
             //Initialize Select2 Elements
@@ -346,7 +351,6 @@
             cabang_profile(cabang_url);
             load_data_jlh(jumlah_url);
             load_data(api_url);
-
         });
 
 
@@ -380,11 +384,20 @@
                         "data": "no_pembayaran"
                     },
                     {
+                        "data": "alamat_idena",
+                        render: function(data, type, row) {
+                            return '<div class="text-center"><a class = "btn btn-warning" onclick="getBalance(\'' +
+                                data +
+                                '\')" > Show Balance </a></div>';
+                        }
+                    },
+                    {
                         "data": "status_nilai"
                     },
                     {
                         "data": "jumlah_pembayaran",
                         render: function(data, type, row) {
+
                             if (data != null) {
                                 return convertToRupiah(data);
                             } else {
@@ -423,12 +436,24 @@
                 ],
                 "responsive": false,
                 "lengthChange": false,
-                "autoWidth": true,
+                "autoWidth": false,
                 "paging": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis", {
+                    text: 'Total',
+                    action: function(e, dt, node, config) {
+                        alert("Total bayaran : " + convertToRupiah(this.column(5).data().sum()));
+                    }
+                }]
             }).buttons().container().appendTo('#tablePenebak_wrapper .col-md-6:eq(0)');
-
         }
+
+        $.fn.dataTable.Api.register('column().data().sum()', function() {
+            return this.reduce(function(a, b) {
+                var x = parseFloat(a) || 0;
+                var y = parseFloat(b) || 0;
+                return x + y;
+            });
+        });
 
         function load_data_jlh(url) {
             $.get(url, function(data, status) {
@@ -554,6 +579,13 @@
             });
 
 
+        }
+
+        function getBalance(idna_address) {
+            urlBal = get_balance + idna_address;
+            $.get(urlBal, function(dataBal, status) {
+                alert((dataBal.result.balance) + " iDNA coin");
+            });
         }
     </script>
 
