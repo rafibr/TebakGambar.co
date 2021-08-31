@@ -36,8 +36,24 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class=" align-items-center text-center">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
-                                        class="rounded-circle" width="75">
+                                    <table class="table-sm table-bordered table-hover w-100 table-dark" id="table-finance">
+                                        <thead>
+                                            <tr>
+
+                                                <th>iDNA</th>
+                                                <th>Stake 🔒</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+                                                <td>iDNA <span id="idna"></span></td>
+                                                <td>iDNA <span id="idna_stake"></span></td>
+
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
                                     <div class="mt-3">
                                         <h4 id="nama_penebak"></h4>
                                         <hr>
@@ -336,6 +352,8 @@
                 var idena_identity_url = "https://scan.idena.org/identity/";
                 var get_id_penebak = "{{ Request::segment(2) }}";
 
+                var get_balance = "https://api.idena.io/api/Address/";
+
 
                 // https://api.idena.io/api/Identity/0xdb322d16abe145d4e2d15d907f49a80d2fe2dc93/Age (get age)
 
@@ -387,9 +405,7 @@
                 });
 
                 function load_state() {
-                    epochChoose = $("#inputEpoch").val();
-                    state_url = "https://api.idena.io/api/Epoch/" + epochChoose +
-                        "/Identity/" + idna_address;
+
                     sync_data = "https://api.idena.io/api/Identity/" + idna_address + "/Epochs?limit=100";
                     $.get(sync_data, function(hasil) {
 
@@ -488,7 +504,7 @@
                         "autoWidth": false,
                         "buttons": ["pageLength", "copy", "csv", "excel", "pdf", "print", "colvis"]
                     }).buttons().container().appendTo('#tableHistory_wrapper .col-md-6:eq(0)');
-
+                    var urlBal = "";
                     $.get(url, function(data, status) {
                         idna_address = data.alamat_idena;
                         $("#nama_penebak").text(data.name_penebak);
@@ -507,7 +523,17 @@
                         $("#inputKepalaCabang").val(data.id).change();
                         $("#inputJenisPembayaran").val(data.id_dompet).change();
 
+                        urlBal = get_balance + idna_address;
+                        $.get(urlBal, function(dataBal, status) {
+                            console.log(Math.round(dataBal.result.balance));
+                            $("#idna").text(Math.round(dataBal.result.balance));
+                            $("#idna_stake").text(Math.round(dataBal.result.stake));
+                        });
                     });
+
+
+
+
                 }
 
                 $("#formEditPenebak").submit(function(e) {

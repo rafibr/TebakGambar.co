@@ -17,7 +17,8 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0"> <small>Cabang</small> <span class="profile_name">{{ Auth::user()->name }}</span>
+                        <h1 class="m-0"> <small>Cabang</small> <span
+                                class="profile_name">{{ Auth::user()->name }}</span>
                         </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
@@ -104,6 +105,18 @@
                                     </div>
                                 </div>
 
+                            </div>
+                            <div id="loaderSync" class="overlay hide">
+                                <div class="d-flex flex-column align-items-center justify-content-center">
+                                    <div class="row">
+                                        <div class="spinner-border text-dark" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                    <div class="row text-dark">
+                                        <strong id="textLoader">Collecting data</strong>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -227,7 +240,8 @@
             </div>
         </div> --}}
 
-        <div class="modal fade" id="warningDelete" role="dialog" aria-labelledby="warningDeleteTitle" aria-hidden="true">
+        <div class="modal fade" id="warningDelete" role="dialog" aria-labelledby="warningDeleteTitle"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -251,7 +265,8 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalQRDompet" role="dialog" aria-labelledby="modalQRDompetTitle" aria-hidden="true">
+        <div class="modal fade" id="modalQRDompet" role="dialog" aria-labelledby="modalQRDompetTitle"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -324,6 +339,7 @@
         });
 
         $(document).ready(function() {
+            $("#loaderSync").hide();
 
             $('#inputKepalaCabang').val({{ Request::segment(2) }});
             $('#inputKepalaCabang').select2().trigger('change');
@@ -369,7 +385,11 @@
                     {
                         "data": "jumlah_pembayaran",
                         render: function(data, type, row) {
-                            return convertToRupiah(data);
+                            if (data != null) {
+                                return convertToRupiah(data);
+                            } else {
+                                return "";
+                            }
                         }
                     },
                     {
@@ -391,7 +411,8 @@
                     {
                         "data": "id_penebak",
                         render: function(data, type, row) {
-                            return '<div class="text-center"><a href = "' + base_url +
+                            return '<div class="text-center"> <a onclick="syncData(\'' + row.alamat_idena +
+                                '\')" class="btn btn-success">Sync Data</a>&nbsp<a href = "' + base_url +
                                 '/penebak/' + data +
                                 '" class = "btn btn-primary" onclick="getPenebak(' + data +
                                 ')" > Detail </a>&nbsp<a href = "#" class = "btn btn-danger" onclick="deletePenebak(' +
@@ -400,20 +421,6 @@
                         }
                     }
                 ],
-                initComplete: function() {
-                    // Apply the search
-                    this.api().columns().every(function() {
-                        var that = this;
-
-                        $('input', this.footer()).on('keyup change clear', function() {
-                            if (that.search() !== this.value) {
-                                that
-                                    .search(this.value)
-                                    .draw();
-                            }
-                        });
-                    });
-                },
                 "responsive": false,
                 "lengthChange": false,
                 "autoWidth": true,
@@ -453,7 +460,8 @@
 
                     alert(data['success']);
                     $("#modalEditSS").modal('hide');
-                    location.reload();
+                    var table = $('#tablePenebak').DataTable();
+                    table.ajax.reload(null, false);
 
                 }
             });
@@ -512,6 +520,40 @@
                     table.ajax.reload(null, false);
                 }
             });
+        }
+
+        function syncData(idna_address) {
+
+
+            sync_data = "https://api.idena.io/api/Identity/" + idna_address + "/Epochs?limit=100";
+            $.get(sync_data, function(hasil) {
+
+                $.ajax({
+                    type: 'POST',
+                    data: hasil,
+                    url: "{{ url('api/sync') . '/' . Request::segment(2) }}",
+                    beforeSend: function() {
+
+                        $("#loaderSync").show();
+                        setTimeout(function() {
+                            $("#textLoader").text("Still collecting data...")
+                        }, 10000);
+                        setTimeout(function() {
+                            $("#textLoader").text("Taking longer than anticipated...")
+                        }, 20000);
+                    },
+                    success: function(data) {
+
+                        alert(data['success']);
+                        $("#loaderSync").hide();
+                        var table = $('#tablePenebak').DataTable();
+                        table.ajax.reload(null, false);
+                    }
+                });
+
+            });
+
+
         }
     </script>
 

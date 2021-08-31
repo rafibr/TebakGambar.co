@@ -23,8 +23,7 @@ class UserController extends Controller
     {
         $penebakTable = Datatables::of(
             Penebak::select('*')
-                // ->join('dompet_digital', 'penebak.id_dompet',  'dompet_digital.id_dompet')
-                ->join(DB::raw('(SELECT t1.id_penebak as val_id_penebak, id_history, maxEpoch, status_nilai, jumlah_pembayaran, status_pembayaran FROM validasi_history t1 INNER JOIN( SELECT id_penebak, MAX(epoch) maxEpoch FROM validasi_history GROUP BY id_penebak ) tmp ON t1.id_penebak = tmp.id_penebak AND t1.epoch = tmp.maxEpoch) val'), function ($join) {
+                ->leftjoin(DB::raw('(SELECT t1.id_penebak as val_id_penebak, id_history, maxEpoch, status_nilai, jumlah_pembayaran, status_pembayaran FROM validasi_history t1 INNER JOIN( SELECT id_penebak, MAX(epoch) maxEpoch FROM validasi_history GROUP BY id_penebak ) tmp ON t1.id_penebak = tmp.id_penebak AND t1.epoch = tmp.maxEpoch) val'), function ($join) {
                     $join->on('penebak.id_penebak', '=', 'val.val_id_penebak');
                 })
                 ->where("id_kepala_cabang", $id)
