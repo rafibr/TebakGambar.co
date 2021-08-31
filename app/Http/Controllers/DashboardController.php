@@ -52,6 +52,17 @@ class DashboardController extends Controller
         return view('validasi');
     }
 
+    public function balanceView($id)
+    {
+        if (Auth::user()->id == $id || Auth::user()->level == 99) {
+            $data = User::where("level", '!=', 99)->get();
+            $dataDompet = DompetDigital::all();
+            return view('balance', ['data' => $data, 'dataDompet' => $dataDompet]);
+        } else {
+            return redirect('home');
+        }
+    }
+
     // public function penebakView()
     // {
     //     return view('penebak');
