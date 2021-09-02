@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,9 +33,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('cabang', [DashboardController::class, 'userView']);
     Route::get('dompet', [DashboardController::class, 'dompetView']);
     Route::get('validasi', [DashboardController::class, 'validasiView']);
-
+    Route::get('balance/{id}', [DashboardController::class, 'balanceView']);
 
     Route::get('profile/{id}', [DashboardController::class, 'profileView']);
     Route::get('penebak/{id}', [DashboardController::class, 'penebakView']);
+
 
 });

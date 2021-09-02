@@ -22,9 +22,13 @@
                     <a href="{{ url('profile/' . Auth::user()->id) }}"
                         class="nav-link {{ Request::segment(1) == 'profile' ? 'active' : '' }}">Profile</a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ url('balance/' . Auth::user()->id) }}"
+                        class="nav-link {{ Request::segment(1) == 'balance' ? 'active' : '' }}">Balance</a>
+                </li>
 
                 @if (Auth::user()->level == 99)
-
+                {{-- Master Admin Menu --}}
                     <li class="nav-item dropdown">
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false"
