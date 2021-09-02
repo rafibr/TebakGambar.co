@@ -93,7 +93,6 @@
                                                     <th>Nama</th>
                                                     <th>Address</th>
                                                     <th>Dompet Pembayaran</th>
-                                                    <th>Balance</th>
                                                     <th>Status Nilai</th>
                                                     <th>Pembayaran</th>
                                                     <th>Status Pembayaran</th>
@@ -332,7 +331,6 @@
         var base_url = "{{ url('') }}";
         var jumlah_url = "{{ url('api/penebakcount') . '/' . Request::segment(2) }}";
         var cabang_url = "{{ url('api/cabang_profile') . '/' . Request::segment(2) }}";
-        var get_balance = "https://api.idena.io/api/Address/";
 
         var idena_identity_url = "{{ 'https://scan.idena.org/identity/' }}";
         var image_url = "{{ url('storage/SSDompet') . '/' }}";
@@ -380,14 +378,6 @@
                             return '<div class="text-center"><a class = "btn btn-warning" onclick="getQr(\'' +
                                 data +
                                 '\', ' + row.no_pembayaran + ')" > Show Qr </a></div>';
-                        }
-                    },
-                    {
-                        "data": "alamat_idena",
-                        render: function(data, type, row) {
-                            return '<div class="text-center"><a class = "btn btn-warning" onclick="getBalance(\'' +
-                                data +
-                                '\')" > Show Balance </a></div>';
                         }
                     },
                     {
@@ -582,12 +572,7 @@
 
         }
 
-        function getBalance(idna_address) {
-            urlBal = get_balance + idna_address;
-            $.get(urlBal, function(dataBal, status) {
-                alert((dataBal.result.balance) + " iDNA coin");
-            });
-        }
+
     </script>
 
 @endsection
