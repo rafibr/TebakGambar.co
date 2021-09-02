@@ -86,6 +86,7 @@
                                                     <th>Nama</th>
                                                     <th>Address</th>
                                                     <th>Balance</th>
+                                                    <th>Stake</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -202,6 +203,14 @@
                                 '\')" > Show Balance </a></div>';
                         }
                     },
+                    {
+                        "data": "alamat_idena",
+                        render: function(data, type, row) {
+                            return '<div class="text-center"><a class = "btn btn-info" onclick="getStake(\'' +
+                                data +
+                                '\')" > Show Stake </a></div>';
+                        }
+                    }
 
                 ],
                 "responsive": false,
@@ -240,7 +249,14 @@
         function getBalance(idna_address) {
             urlBal = get_balance + idna_address;
             $.get(urlBal, function(dataBal, status) {
-                alert((dataBal.result.balance) + " iDNA coin");
+                alert("Balance: " + (dataBal.result.balance) + " iDNA coin");
+            });
+        }
+
+        function getStake(idna_address) {
+            urlBal = get_balance + idna_address;
+            $.get(urlBal, function(dataBal, status) {
+                alert("Stake: " + (dataBal.result.stake) + " iDNA coin");
             });
         }
     </script>
