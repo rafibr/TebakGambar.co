@@ -93,7 +93,6 @@
                                                     <th>Nama</th>
                                                     <th>Address</th>
                                                     <th>Dompet Pembayaran</th>
-                                                    <th>No. Pembayaran</th>
                                                     <th>Balance</th>
                                                     <th>Status Nilai</th>
                                                     <th>Pembayaran</th>
@@ -286,6 +285,9 @@
                                     <img id="ss_dompet" src="{{ url('storage/SSDompet/background.jpg') }}"
                                         class="img-fluid mb-2" alt="SS Dompet Digital" />
                                 </a>
+
+                                <br>
+                                <p>No. Pembayaran: <b id="no_bayar"></b></p>
                             </div>
                         </div>
                     </div>
@@ -377,11 +379,8 @@
                         render: function(data, type, row) {
                             return '<div class="text-center"><a class = "btn btn-warning" onclick="getQr(\'' +
                                 data +
-                                '\')" > Show Qr </a></div>';
+                                '\', ' + row.no_pembayaran + ')" > Show Qr </a></div>';
                         }
-                    },
-                    {
-                        "data": "no_pembayaran"
                     },
                     {
                         "data": "alamat_idena",
@@ -425,7 +424,8 @@
                         "data": "id_penebak",
                         render: function(data, type, row) {
                             return '<div class="text-center"> <a onclick="syncData(\'' + row.alamat_idena +
-                                '\')" class="btn btn-success">Sync Data</a>&nbsp<a href = "' + base_url +
+                                '\', ' + data + ')" class="btn btn-success">Sync Data</a>&nbsp<a href = "' +
+                                base_url +
                                 '/penebak/' + data +
                                 '" class = "btn btn-primary" onclick="getPenebak(' + data +
                                 ')" > Detail </a>&nbsp<a href = "#" class = "btn btn-danger" onclick="deletePenebak(' +
@@ -525,10 +525,11 @@
             $("#inputidPenebak").val(id);
         }
 
-        function getQr(image) {
+        function getQr(image, no_bayar) {
             $('#modalQRDompet').modal('show')
             $("#ss_dompet").attr("src", image_url + image);
             $("#ss_dompet_parent").attr("href", image_url + image)
+            $("#no_bayar").text(no_bayar)
 
         }
 
@@ -547,7 +548,7 @@
             });
         }
 
-        function syncData(idna_address) {
+        function syncData(idna_address, id_penebak) {
 
 
             sync_data = "https://api.idena.io/api/Identity/" + idna_address + "/Epochs?limit=100";
@@ -556,7 +557,7 @@
                 $.ajax({
                     type: 'POST',
                     data: hasil,
-                    url: "{{ url('api/sync') . '/' . Request::segment(2) }}",
+                    url: "{{ url('api/sync') . '/' }}" + id_penebak,
                     beforeSend: function() {
 
                         $("#loaderSync").show();

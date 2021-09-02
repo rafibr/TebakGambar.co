@@ -191,10 +191,17 @@ class SaveDataController extends Controller
                 $historyValidasi->age =  ($dataLoop['epoch'] - $dataLoop['birthEpoch']) + 1;
                 $historyValidasi->prevstate = $dataLoop['prevState'];
                 $historyValidasi->state = $dataLoop['state'];
-                $point = $dataLoop['totalShortAnswers']['point'];
-                $flipsCount = $dataLoop['totalShortAnswers']['flipsCount'];
 
-                $score = round((($point / $flipsCount) * 100), 2);
+                if ($dataLoop['totalShortAnswers']['point'] == "0" || $dataLoop['totalShortAnswers']['point'] == 0) {
+                    $score = 0;
+                } else {
+                    $point = $dataLoop['totalShortAnswers']['point'];
+                    $flipsCount = $dataLoop['totalShortAnswers']['flipsCount'];
+                    $score = round((($point / $flipsCount) * 100), 2);
+                }
+
+
+
                 $historyValidasi->nilai = $score;
 
 
