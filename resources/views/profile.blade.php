@@ -94,6 +94,7 @@
                                                     <th>Address</th>
                                                     <th>Dompet Pembayaran</th>
                                                     <th>Status Nilai</th>
+                                                    <th>Keterangan</th>
                                                     <th>Pembayaran</th>
                                                     <th>Status Pembayaran</th>
                                                     <th>Aksi</th>
@@ -382,6 +383,9 @@
                     },
                     {
                         "data": "status_nilai"
+                    },
+                    {
+                        "data": "keterangan"
                     },
                     {
                         "data": "jumlah_pembayaran",

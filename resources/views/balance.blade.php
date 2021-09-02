@@ -76,8 +76,16 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-info" onclick="syncBal({{ Request::segment(2) }})">Sync
+                                            Balance and Stake</button>
+                                    </div>
+                                    <div class="col-md-5"></div>
+                                </div>
+                                <br>
+                                <div class="row">
                                     <div class="col d-flex justify-content-center">
-                                        <div id="demo"></div>
 
                                         <table id="tablePenebak"
                                             class="table table-responsive table-hover table-bordered table-striped">
@@ -196,20 +204,10 @@
                     },
 
                     {
-                        "data": "alamat_idena",
-                        render: function(data, type, row) {
-                            return '<div class="text-center"><a class = "btn btn-warning" onclick="getBalance(\'' +
-                                data +
-                                '\')" > Show Balance </a></div>';
-                        }
+                        "data": "balance"
                     },
                     {
-                        "data": "alamat_idena",
-                        render: function(data, type, row) {
-                            return '<div class="text-center"><a class = "btn btn-info" onclick="getStake(\'' +
-                                data +
-                                '\')" > Show Stake </a></div>';
-                        }
+                        "data": "stake"
                     }
 
                 ],
@@ -258,6 +256,33 @@
             $.get(urlBal, function(dataBal, status) {
                 alert("Stake: " + (dataBal.result.stake) + " iDNA coin");
             });
+        }
+
+        function syncBal(id_cabang) {
+            var syncBal = "{{ url('api/syncBalance') . '/' . Request::segment(2) }}";
+
+            $.ajax({
+                    type: 'get',
+                    url: syncBal,
+                    beforeSend: function() {
+
+                        $("#loaderSync").show();
+                        setTimeout(function() {
+                            $("#textLoader").text("Still collecting data...")
+                        }, 10000);
+                        setTimeout(function() {
+                            $("#textLoader").text("Taking longer than anticipated...")
+                        }, 20000);
+                    },
+                    success: function(data) {
+
+                        alert(data['success']);
+                        $("#loaderSync").hide();
+                        var table = $('#tablePenebak').DataTable();
+                        table.ajax.reload(null, false);
+                    }
+                });
+
         }
     </script>
 

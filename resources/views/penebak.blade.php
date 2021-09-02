@@ -171,6 +171,7 @@
                                                             <th>Nilai</th>
                                                             <th>Pembayaran</th>
                                                             <th>Status Pembayaran</th>
+                                                            <th>Keterangan</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="tableHistory-body">
@@ -301,6 +302,47 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                                     <button type="submit" form="formEditSS" class="btn btn-success">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Modal edit Keterangan history --}}
+                <div class="modal fade" id="modalEditKeterangan" role="dialog"
+                    aria-labelledby="modalEditKeteranganTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalEditKeteranganTitle">Edit Ketarangan</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <form id="formEditKeterangan" method="POST" enctype="multipart/form-data">
+                                <div class="modal-body">
+                                    <input type="hidden" class="id_history" id="id_history" name="id_history">
+
+                                    <div class="form-group">
+                                        <label for="inputEpoch" class="col-sm-4 col-form-label">Epoch</label>
+                                        <input type="text" class="form-control" id="inputEpoch" placeholder="Input Epoch"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputStatusNilai" class="col-sm-4 col-form-label">Status Nilai</label>
+                                        <input type="text" class="form-control" id="inputStatusNilai"
+                                            placeholder="Input Status Nilai" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputKeterangan" class="col-sm-4 col-form-label">Keterangan</label>
+                                        <textarea class="form-control" name="inputKeterangan" id="inputKeterangan"
+                                            rows="10"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="submit" form="formEditKeterangan" class="btn btn-success">Simpan</button>
                                 </div>
                             </form>
                         </div>
@@ -496,6 +538,19 @@
                                     }
 
                                 }
+                            },
+                            {
+                                "data": "keterangan",
+                                render: function(data, type, row) {
+
+                                    return '<div class="text-center"> <button onclick="keterangan(' +
+                                        row.id_history +
+                                        ', \'' + row.keterangan +
+                                        '\', ' + row.epoch + ', \'' + row.status_nilai +
+                                        '\')" class="btn btn-info justify-content-center">'+row.keterangan+'</button> </div> '
+
+
+                                }
                             }
                         ],
 
@@ -550,6 +605,21 @@
                         }
                     });
                 });
+                $("#formEditKeterangan").submit(function(e) {
+                    e.preventDefault();
+                    var data = $(this).serialize();
+                    $.ajax({
+                        type: 'POST',
+                        data: data,
+                        url: "{{ url('api/edit_keterangan') }}",
+                        success: function(data) {
+                            alert(data['success']);
+                            $("#modalEditKeterangan").modal('hide');
+                            var table = $('#tableHistory').DataTable();
+                            table.ajax.reload(null, false);
+                        }
+                    });
+                });
 
                 $("#formEditSS").submit(function(e) {
                     e.preventDefault();
@@ -591,6 +661,14 @@
                             table.ajax.reload(null, false);
                         }
                     });
+                }
+
+                function keterangan(id_history, keterangan, epoch, status_nilai) {
+                    $("#modalEditKeterangan").modal('show');
+                    $("#id_history").val(id_history);
+                    $("#inputEpoch").val(epoch);
+                    $("#inputStatusNilai").val(status_nilai);
+                    $("#inputKeterangan").val(keterangan);
                 }
             </script>
 

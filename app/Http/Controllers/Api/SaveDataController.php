@@ -248,6 +248,26 @@ class SaveDataController extends Controller
         }
         return response()->json(['success' => "Data berhasil disimpan"]);
     }
+    public function syncBalance(Request $request)
+    {
+        $dataId = request()->segment(3);
+
+        $penebak = Penebak::where("id_kepala_cabang", $dataId)->get();
+
+        foreach ($penebak as $row) {
+
+            $url = "https://api.idena.io/api/Address/" . $row->alamat_idena;
+
+            $penebakSave = Penebak::find($row->id_penebak);
+            $dataSave = Http::get($url);
+            $penebakSave->balance = $dataSave['result']['balance'];
+            $penebakSave->stake = $dataSave['result']['stake'];
+            $penebakSave->save();
+        }
+
+        return response()->json(['success' => "Data berhasil disimpan"]);
+    }
+    // ------------------------------------------------------
 
     public function editStatusPembayaran(Request $request)
     {
@@ -260,5 +280,14 @@ class SaveDataController extends Controller
         }
         $validasi->save();
         return response()->json(['success' => "Berhasil di update"]);
+    }
+
+    public function editKeterangan(Request $request)
+    {
+        $data = $request->all();
+        $history = HistoryValidasi::find($data['id_history']);
+        $history->keterangan = $data['inputKeterangan'];
+        $history->save();
+        return response()->json(['success' => "Data berhasil di update"]);
     }
 }

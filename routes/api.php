@@ -58,4 +58,9 @@ Route::post('delete_validasi/', [SaveDataController::class, 'deleteValidasi']);
 Route::get('history/{id}', [historyValidasiController::class, 'getHistory']);
 
 Route::post('sync/{id}', [SaveDataController::class, 'syncData']);
+Route::get('syncBalance/{id}', [SaveDataController::class, 'syncBalance']);
+
+
 Route::post('edit_status_bayar/', [SaveDataController::class, 'editStatusPembayaran']);
+
+Route::post('edit_keterangan/', [SaveDataController::class, 'editKeterangan']);
