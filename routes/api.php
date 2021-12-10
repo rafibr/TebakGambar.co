@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CabangController;
 use App\Http\Controllers\Api\DompetController;
 use App\Http\Controllers\Api\historyValidasiController;
 use App\Http\Controllers\Api\PenebakController;
+use App\Http\Controllers\Api\RuleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SaveDataController;
 use App\Http\Controllers\Api\ValidasiController;
@@ -28,7 +29,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('users', [UserController::class, 'getUsers']);
 Route::get('cabang/{id}', [UserController::class, 'getPenebakCabang']);
-Route::get('penebak/{id}', [PenebakController::class, 'getPenebak']);
 
 Route::get('penebak/{id}', [PenebakController::class, 'getPenebak']);
 Route::get('penebakcount/{id}', [CabangController::class, 'getCountPenebak']);
@@ -59,6 +59,9 @@ Route::get('history/{id}', [historyValidasiController::class, 'getHistory']);
 
 Route::post('sync/{id}', [SaveDataController::class, 'syncData']);
 Route::get('syncBalance/{id}', [SaveDataController::class, 'syncBalance']);
+
+Route::get('rules', [RuleController::class, 'getRules']);
+Route::post('edit_rules/', [SaveDataController::class, 'editRules']);
 
 
 Route::post('edit_status_bayar/', [SaveDataController::class, 'editStatusPembayaran']);

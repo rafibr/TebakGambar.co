@@ -31,6 +31,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('home', [DashboardController::class, 'homeView']);
     Route::get('cabang', [DashboardController::class, 'userView']);
+    Route::get('rules', [DashboardController::class, 'ruleView']);
+
     Route::get('dompet', [DashboardController::class, 'dompetView']);
     Route::get('validasi', [DashboardController::class, 'validasiView']);
     Route::get('balance/{id}', [DashboardController::class, 'balanceView']);

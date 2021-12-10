@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DompetDigital;
 use App\Models\HistoryValidasi;
+use App\Models\RuleBayar;
 use App\Models\User;
 use App\Models\Validasi;
 use Illuminate\Http\Request;
@@ -42,6 +43,12 @@ class DashboardController extends Controller
         return view('penebak', ['data' => $data, 'dataDompet' => $dataDompet]);
     }
 
+    public function ruleView()
+    {
+        $data = RuleBayar::all();
+        return view('rule', ['data' => $data]);
+    }
+
     public function dompetView()
     {
         return view('dompet');
@@ -63,9 +70,4 @@ class DashboardController extends Controller
         }
     }
 
-    // public function penebakView()
-    // {
-    //     return view('penebak');
-    // }
-    // /. function for View
 }

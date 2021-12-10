@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DompetDigital;
 use App\Models\HistoryValidasi;
 use App\Models\Penebak;
+use App\Models\RuleBayar;
 use App\Models\User;
 use App\Models\Validasi;
 use Facade\FlareClient\Http\Client;
@@ -22,6 +23,7 @@ class SaveDataController extends Controller
         $user = Penebak::find($data['inputidPenebak'])->delete();
         return response()->json(['success' => "Data berhasil dihapus"]);
     }
+
     public function saveCabangProfile(Request $request)
     {
         $data = $request->all();
@@ -200,54 +202,51 @@ class SaveDataController extends Controller
                     $score = round((($point / $flipsCount) * 100), 2);
                 }
 
-
-
                 $historyValidasi->nilai = $score;
-
 
                 $state = $dataLoop['state'];
                 $prevState = $dataLoop['prevState'];
                 $statusNilai = "";
                 $jumlahPembayaran = 0;
 
+                // menentukan kode rule
+                $kode_rule = "";
                 if ($state == "Newbie") {
-                    $statusNilai = "Newbie";
-                    $jumlahPembayaran = 20000;;
+                    $kode_rule = "1nwb";
                 } else if ($state == "Verified") {
                     if ($prevState == "Newbie") {
-                        $statusNilai = "Newbie => Verified";
-                        $jumlahPembayaran = 75000;
+                        $kode_rule = "2ntv";
                     } else {
                         if ($score < 100) {
-                            $statusNilai = "Verified < 100%";
-                            $jumlahPembayaran = 35000;
+                            $kode_rule = "3vtv_almos";
                         } else {
-                            $statusNilai = "Verified 100%";
-                            $jumlahPembayaran = 40000;
+                            $kode_rule = "4vtv_perfe";
                         }
                     }
                 } else if ($state == "Human") {
                     if ($score < 100) {
-                        $statusNilai = "Human < 100%";
-                        $jumlahPembayaran = 40000;
+                        $kode_rule = "5hth_almos";
                     } else {
-                        $statusNilai = "Human 100%";
-                        $jumlahPembayaran = 50000;
+                        $kode_rule = "6hth_perfe";
                     }
                 } else {
-                    $statusNilai = "Gagal";
-                    $jumlahPembayaran = 10000;
+                    $kode_rule = "7fail";
                 }
+                // end menentukan kode rule
+
+                $rule = RuleBayar::where('kode_rule', $kode_rule)->first();
+                $statusNilai = $rule->nama_rule;
+                $jumlahPembayaran = $rule->jlh_bayar;
 
                 $historyValidasi->status_nilai = $statusNilai;
                 $historyValidasi->jumlah_pembayaran = $jumlahPembayaran;
-
 
                 $historyValidasi->save();
             }
         }
         return response()->json(['success' => "Data berhasil disimpan"]);
     }
+
     public function syncBalance(Request $request)
     {
         $dataId = request()->segment(3);
@@ -290,4 +289,15 @@ class SaveDataController extends Controller
         $history->save();
         return response()->json(['success' => "Data berhasil di update"]);
     }
+    // ------------------------------------------------------
+    public function editRules(Request $request)
+    {
+        $data = $request->all();
+        $rule = RuleBayar::find($data['inputIdRule']);
+        $rule->jlh_bayar = $data['inputJlhBayar'];
+        $rule->save();
+        return response()->json(['success' => "Data berhasil di update"]);
+    }
+
+    //
 }

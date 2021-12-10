@@ -29,6 +29,22 @@
         <!-- Main content -->
         <div class="content">
             <div class="container">
+
+                @if (Auth::user()->level == 99)
+                <div class="row">
+                    <div class="col">
+                        <div class="alert alert-warning" role="alert">
+                            <h4 class="alert-heading">Perhatian!</h4>
+                            <p>Harap mengisi "Rules Pembayaran" yang berada pada <a href="{{ url('rules') }}" class="alert-link">Admin
+                                    Menu</a>.</p>
+                                    <hr>
+                                    <p class="mb-0">Abaikan pesan ini jika sudah mengisi "Rules Pembayaran".</p>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+
                 <div class="row">
                     <div class="col-md-5">
 

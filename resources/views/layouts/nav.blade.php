@@ -28,7 +28,7 @@
                 </li>
 
                 @if (Auth::user()->level == 99)
-                {{-- Master Admin Menu --}}
+                    {{-- Master Admin Menu --}}
                     <li class="nav-item dropdown">
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false"
@@ -49,6 +49,13 @@
                             <li class="nav-item">
                                 <a href="{{ url('dompet') }}"
                                     class="nav-link {{ Request::is('dompet') ? 'active' : '' }}">Dompet Digital</a>
+                            </li>
+
+                            <li class="dropdown-divider"></li>
+
+                            <li class="nav-item">
+                                <a href="{{ url('rules') }}"
+                                    class="nav-link {{ Request::is('rules') ? 'active' : '' }}">Rules Pembayaran</a>
                             </li>
 
                         </ul>

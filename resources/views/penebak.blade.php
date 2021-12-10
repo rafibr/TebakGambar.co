@@ -467,6 +467,7 @@
                             },
                             success: function(data) {
 
+                                // console.log(data);
                                 alert(data['success']);
                                 $("#loaderSync").hide();
                                 var table = $('#tableHistory').DataTable();
