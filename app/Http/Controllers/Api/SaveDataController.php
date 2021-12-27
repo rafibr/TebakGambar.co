@@ -103,16 +103,18 @@ class SaveDataController extends Controller
 
     public function saveSSDompet(Request $request)
     {
-        $extension = $request->file('imgupload')->extension();
-        $imgname = date('dmyHis') . '.' . $extension;
-        $this->validate($request, ['imgupload' => 'required|file|max:5000']);
-        $path = Storage::putFileAs('public/SSDompet', $request->file('imgupload'), $imgname);
+        $extension = $request->file('imgupload')->getClientOriginalExtension();
+        $filename = date('YmdHis') . "." . $extension;
+        $this->validate($request, [
+            'imgupload' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5000',
+        ]);
+        $path = $request->file('imgupload')->move(public_path('/storage/SSDompet'), $filename);
 
         $idPenebak = $request['id_penebak'];
         $penebak = Penebak::find($idPenebak);
-        $penebak->image_dompet = $imgname;
+        $penebak->image_dompet = $filename;
         $penebak->save();
-        return response()->json(['success' => "Data berhasil diupdate"]);
+        return response()->json(['success' => "Data berhasil disimpan"]);
     }
 
 
